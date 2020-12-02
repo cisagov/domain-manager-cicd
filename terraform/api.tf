@@ -52,7 +52,7 @@ resource "aws_lb_listener" "api" {
   port              = local.api_load_balancer_port
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-2016-08"
-  certificate_arn   = aws_acm_certificate.cert.arn
+  certificate_arn   = module.acm.this_acm_certificate_arn
 
   default_action {
     target_group_arn = aws_lb_target_group.api.arn
