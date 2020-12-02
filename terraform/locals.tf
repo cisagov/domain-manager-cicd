@@ -16,8 +16,8 @@ locals {
     "DB_HOST" : module.documentdb.endpoint
     "DB_PORT" : 27017
     "MONGO_TYPE" : "DOCUMENTDB"
-    "WEBSITE_STORAGE" : aws_s3_bucket.websites.id
-    "TEMPLATE_BUCKET" : aws_s3_bucket.websites.id
+    "WEBSITE_STORAGE" : aws_s3_bucket.bucket.id
+    "TEMPLATE_BUCKET" : aws_s3_bucket.bucket.id
     "NC_IP" : "0.0.0.0"
     "BROWSERLESS_ENDPOINT" : "${aws_lb.network.dns_name}:${local.browserless_port}"
     "WORKERS" : 4
@@ -32,7 +32,7 @@ locals {
     "DB_HOST" : module.documentdb.endpoint
     "DB_PORT" : 27017
     "MONGO_TYPE" : "DOCUMENTDB"
-    "TEMPLATE_BUCKET" : aws_s3_bucket.websites.id
+    "TEMPLATE_BUCKET" : aws_s3_bucket.bucket.id
     "DB_PW" : aws_ssm_parameter.docdb_password.value
     "DB_USER" : aws_ssm_parameter.docdb_username.value
   }
