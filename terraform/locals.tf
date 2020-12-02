@@ -21,7 +21,7 @@ locals {
     "NC_IP" : "0.0.0.0"
     "BROWSERLESS_ENDPOINT" : "${aws_lb.network.dns_name}:${local.browserless_port}"
     "WORKERS" : 4
-    "AWS_DEFAULT_REGION" : var.region
+    "AWS_REGION" : var.region
     "API_KEY" : aws_ssm_parameter.api_key.value
     "DB_PW" : aws_ssm_parameter.docdb_password.value
     "DB_USER" : aws_ssm_parameter.docdb_username.value
