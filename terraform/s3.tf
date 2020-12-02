@@ -2,7 +2,7 @@
 # S3
 # ===========================
 resource "aws_s3_bucket" "bucket" {
-  bucket = "${var.app}-${var.env}"
+  bucket = "dhs-domain-manager-${var.env}"
   acl    = "public-read"
   policy = <<POLICY
 {
@@ -13,7 +13,7 @@ resource "aws_s3_bucket" "bucket" {
       "Effect": "Allow",
       "Principal": "*",
       "Action": "s3:GetObject",
-      "Resource": "arn:aws:s3:::${var.app}-${var.env}-bucket/*"
+      "Resource": "arn:aws:s3:::dhs-domain-manager-${var.env}/*"
     }
   ]
 }
