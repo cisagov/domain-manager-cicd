@@ -43,7 +43,7 @@ resource "aws_lambda_function" "sync_db" {
   timeout          = var.sync_db_timeout
 
   environment {
-    variables = local.api_environment
+    variables = local.lambda_environment
   }
 
   vpc_config {
