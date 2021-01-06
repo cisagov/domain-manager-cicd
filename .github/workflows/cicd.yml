@@ -21,7 +21,7 @@ jobs:
     env:
       IMAGE_REPO: domain-manager-ui
     outputs:
-      tag: ${{ steps.var.outputs.tag }}
+      tag: ${{ steps.vars.outputs.tag }}
     steps:
       - uses: actions/checkout@v2
         with:
@@ -47,7 +47,7 @@ jobs:
     env:
       IMAGE_REPO: domain-manager-api
     outputs:
-      tag: ${{ steps.vars.outputs.tag}}
+      tag: ${{ steps.vars.outputs.tag }}
     steps:
       - uses: actions/checkout@v2
         with:
@@ -128,9 +128,9 @@ jobs:
         run: terraform init -input=false
 
       # Plan terraform
-      # - name: Terraform Plan
-      #   working-directory: ./domain-manager-cicd/terraform
-      #   run: terraform plan -input=false -var-file ./vars/$ENVIRONMENT.tfvars -var="api_image_tag=${{needs.build_api.outputs.tag}}" > /dev/null -var="ui_image_tag=${{needs.build_ui.outputs.tag}}"
+      - name: Terraform Plan
+        working-directory: ./domain-manager-cicd/terraform
+        run: terraform plan -input=false -var-file ./vars/$ENVIRONMENT.tfvars -var="api_image_tag=${{needs.build_api.outputs.tag}}" -var="ui_image_tag=${{needs.build_ui.outputs.tag}}"
 
 
       # Apply terraform
