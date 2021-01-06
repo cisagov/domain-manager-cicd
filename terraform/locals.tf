@@ -42,4 +42,20 @@ locals {
   browserless_port           = 3000
   browserless_name           = "${var.app}-${var.env}-browserless"
   browserless_container_name = "browserless"
+
+  # UI LOCALS
+  ui_container_port     = 80
+  ui_container_name     = "ui"
+  ui_container_protocol = "HTTP"
+  ui_load_balancer_port = 443
+  ui_name               = "${var.app}-${var.env}-ui"
+
+  ui_environment = {
+    "API_URL" : "https://${aws_route53_record.domain.name}:${local.api_load_balancer_port}"
+    "AWS_PROJECT_REGION" : var.region
+    "AWS_USER_POOLS_ID" : aws_cognito_user_pool.pool.id
+    "OAUTH_DOMAIN" : "${aws_cognito_user_pool_domain.domain.domain}.auth.${var.region}.amazoncognito.com"
+    "OAUTH_REDIRECT_URL" : "https://${aws_route53_record.domain.name}"
+    "AWS_USER_POOLS_WEB_CLIENT_ID" : aws_cognito_user_pool_client.client.id
+  }
 }

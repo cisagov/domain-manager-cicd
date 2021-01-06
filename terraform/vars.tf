@@ -112,6 +112,18 @@ variable "ui_image_tag" {
   type = string
 }
 
+variable "ui_memory" {
+  type = number
+}
+
+variable "ui_cpu" {
+  type = number
+}
+
+variable "ui_desired_count" {
+  type = number
+}
+
 #=================================================
 #  SYNC DB Lambda Function
 #=================================================

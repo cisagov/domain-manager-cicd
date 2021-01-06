@@ -64,6 +64,9 @@ api_desired_count = 1
 #  UI
 #=================================================
 ui_image_repo = "780016325729.dkr.ecr.us-east-1.amazonaws.com/domain-manager-ui"
+ui_cpu = 2048
+ui_memory = 4096
+ui_desired_count = 1
 
 #=================================================
 #  SYNC DB Lambda Function
