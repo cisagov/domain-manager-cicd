@@ -23,11 +23,11 @@ resource "aws_lb_target_group" "ui" {
 # ALB LISTENER
 #=========================
 resource "aws_lb_listener" "ui" {
-  load_balancer_arn = module.public_alb.alb_arn
+  load_balancer_arn = module.alb.alb_arn
   port              = local.ui_load_balancer_port
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-2016-08"
-  certificate_arn   = aws_acm_certificate.cert.arn
+  certificate_arn   = module.acm.this_acm_certificate_arn
 
   default_action {
     target_group_arn = aws_lb_target_group.ui.arn
