@@ -32,6 +32,27 @@ module "alb" {
   target_group_name  = "${var.app}-${var.env}-tg"
 }
 
+# ===================================
+# Listener
+# ===================================
+resource "aws_lb_listener" "https" {
+  load_balancer_arn = module.alb.alb_arn
+  port              = 443
+  protocol          = "HTTPS"
+  certificate_arn   = module.acm.this_acm_certificate_arn
+
+  default_action {
+    type = "fixed-response"
+
+    fixed_response {
+      content_type = "text/plain"
+      message_body = "${var.app}-${var.env} fixed response"
+      status_code  = 200
+    }
+  }
+}
+
+
 #=================================================
 #  NETWORK LOAD BALANCER
 #=================================================

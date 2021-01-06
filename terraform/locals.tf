@@ -7,7 +7,7 @@ locals {
   api_container_name     = "${var.app}-api"
   api_container_port     = 5000
   api_container_protocol = "HTTP"
-  api_load_balancer_port = 8043
+  api_load_balancer_port = 443
 
   api_environment = {
     "FLASK_APP" : "main"
@@ -51,7 +51,7 @@ locals {
   ui_name               = "${var.app}-${var.env}-ui"
 
   ui_environment = {
-    "API_URL" : "https://${aws_route53_record.domain.name}:${local.api_load_balancer_port}"
+    "API_URL" : "https://${aws_route53_record.domain.name}"
     "AWS_PROJECT_REGION" : var.region
     "AWS_USER_POOLS_ID" : aws_cognito_user_pool.pool.id
     "OAUTH_DOMAIN" : "${aws_cognito_user_pool_domain.domain.domain}.auth.${var.region}.amazoncognito.com"

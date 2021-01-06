@@ -45,18 +45,21 @@ resource "aws_lb_target_group" "api" {
 }
 
 #=========================
-# ALB LISTENERS
+# ALB LISTENER RULE
 #=========================
-resource "aws_lb_listener" "api" {
-  load_balancer_arn = module.alb.alb_arn
-  port              = local.api_load_balancer_port
-  protocol          = "HTTPS"
-  ssl_policy        = "ELBSecurityPolicy-2016-08"
-  certificate_arn   = module.acm.this_acm_certificate_arn
+resource "aws_lb_listener_rule" "api" {
+  listener_arn = aws_lb_listener.https.arn
+  priority     = 100
 
-  default_action {
-    target_group_arn = aws_lb_target_group.api.arn
+  action {
     type             = "forward"
+    target_group_arn = aws_lb_target_group.api.arn
+  }
+
+  condition {
+    path_pattern {
+      values = ["/api/*", "/api/", "/api"]
+    }
   }
 }
 
