@@ -55,20 +55,20 @@ resource "aws_lambda_function" "sync_db" {
 # ===================================
 # Sync DB CloudWatch Event
 # ===================================
-resource "aws_cloudwatch_event_rule" "syncdb" {
-  name                = "${var.app}-${var.env}-sync_db"
-  description         = "Schedule to run Sync DB Lambda Function"
-  schedule_expression = var.sync_db_schedule
-}
-resource "aws_cloudwatch_event_target" "syncdb" {
-  rule      = aws_cloudwatch_event_rule.syncdb.name
-  target_id = "lambda"
-  arn       = aws_lambda_function.sync_db.arn
-}
-resource "aws_lambda_permission" "sync_db" {
-  statement_id  = "AllowExecutionFromCloudWatch"
-  action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.sync_db.function_name
-  principal     = "events.amazonaws.com"
-  source_arn    = aws_cloudwatch_event_rule.syncdb.arn
-}
+# resource "aws_cloudwatch_event_rule" "syncdb" {
+#   name                = "${var.app}-${var.env}-sync_db"
+#   description         = "Schedule to run Sync DB Lambda Function"
+#   schedule_expression = var.sync_db_schedule
+# }
+# resource "aws_cloudwatch_event_target" "syncdb" {
+#   rule      = aws_cloudwatch_event_rule.syncdb.name
+#   target_id = "lambda"
+#   arn       = aws_lambda_function.sync_db.arn
+# }
+# resource "aws_lambda_permission" "sync_db" {
+#   statement_id  = "AllowExecutionFromCloudWatch"
+#   action        = "lambda:InvokeFunction"
+#   function_name = aws_lambda_function.sync_db.function_name
+#   principal     = "events.amazonaws.com"
+#   source_arn    = aws_cloudwatch_event_rule.syncdb.arn
+# }
