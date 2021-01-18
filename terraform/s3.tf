@@ -20,7 +20,7 @@ resource "aws_s3_bucket" "templates" {
 POLICY
 
   website {
-    index_document = "index.html"
+    index_document = "home.html"
   }
 }
 
@@ -43,6 +43,6 @@ resource "aws_s3_bucket" "websites" {
 POLICY
 
   website {
-    index_document = "index.html"
+    index_document = "home.html"
   }
 }
