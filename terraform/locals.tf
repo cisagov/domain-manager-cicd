@@ -29,6 +29,7 @@ locals {
     "AWS_COGNITO_ENABLED" : 1
     "AWS_COGNITO_USER_POOL_ID" : aws_cognito_user_pool.pool.id
     "AWS_COGNITO_USER_POOL_CLIENT_ID" : aws_cognito_user_pool_client.client.id
+    "AWS_COGNITO_ADMIN_GROUP_NAME": aws_cognito_user_group.admin.name
     "TWO_CAPTCHA" : data.aws_ssm_parameter.two_captcha.value
   }
 
