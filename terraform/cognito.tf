@@ -21,3 +21,9 @@ resource "aws_cognito_user_pool_domain" "domain" {
   domain       = "${var.app}-${var.env}"
   user_pool_id = aws_cognito_user_pool.pool.id
 }
+
+resource "aws_cognito_user_group" "admin" {
+  name         = "admin"
+  user_pool_id = aws_cognito_user_pool.pool.id
+  description  = "Managed by Terraform"
+}
