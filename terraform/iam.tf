@@ -63,7 +63,7 @@ data "aws_iam_policy_document" "lambda_policy_doc" {
   }
 
   statement {
-    actions   = var.allowed_actions
+    actions   = local.allowed_actions
     resources = ["*"]
   }
 }
@@ -131,7 +131,7 @@ resource "aws_iam_role" "ecs_task" {
 
 data "aws_iam_policy_document" "ecs_task" {
   statement {
-    actions = var.allowed_actions
+    actions = local.allowed_actions
 
     resources = [
       "*"

@@ -2,6 +2,15 @@
 # LOCALS
 # ===========================
 locals {
+  allowed_actions = [
+    "acm:*",
+    "s3:*",
+    "route53:*",
+    "cloudfront:*",
+    "cognito-identity:*",
+    "cognito-idp:*",
+    "sqs:*"
+  ]
   # API LOCALS
   api_name               = "${var.app}-${var.env}-api"
   api_container_name     = "${var.app}-api"
@@ -21,6 +30,8 @@ locals {
     "STATIC_GEN_URL" : "http://localhost:8000"
     "TEMPLATE_BUCKET" : aws_s3_bucket.templates.id
     "WEBSITE_BUCKET" : aws_s3_bucket.websites.id
+    "SQS_CHECK_CATEGORY_URL" : aws_sqs_queue.check_category.id
+    "SQS_CATEGORIZE_URL" : aws_sqs_queue.categorize.id
     "BROWSERLESS_ENDPOINT" : "${aws_lb.network.dns_name}:${local.browserless_port}"
     "WORKERS" : 6
     "AWS_REGION" : var.region
@@ -29,19 +40,22 @@ locals {
     "AWS_COGNITO_ENABLED" : 1
     "AWS_COGNITO_USER_POOL_ID" : aws_cognito_user_pool.pool.id
     "AWS_COGNITO_USER_POOL_CLIENT_ID" : aws_cognito_user_pool_client.client.id
-    "AWS_COGNITO_ADMIN_GROUP_NAME": aws_cognito_user_group.admin.name
+    "AWS_COGNITO_ADMIN_GROUP_NAME" : aws_cognito_user_group.admin.name
     "TWO_CAPTCHA" : data.aws_ssm_parameter.two_captcha.value
   }
 
   lambda_environment = {
+    "BROWSERLESS_ENDPOINT" : "${aws_lb.network.dns_name}:${local.browserless_port}"
     "DB_HOST" : module.documentdb.endpoint
     "DB_PORT" : 27017
+    "DB_PW" : aws_ssm_parameter.docdb_password.value
+    "DB_USER" : aws_ssm_parameter.docdb_username.value
     "MONGO_TYPE" : "DOCUMENTDB"
     "TEMPLATE_BUCKET" : aws_s3_bucket.templates.id
     "WEBSITE_BUCKET" : aws_s3_bucket.websites.id
-    "DB_PW" : aws_ssm_parameter.docdb_password.value
-    "DB_USER" : aws_ssm_parameter.docdb_username.value
     "TWO_CAPTCHA" : data.aws_ssm_parameter.two_captcha.value
+    "SQS_CHECK_CATEGORY_URL" : aws_sqs_queue.check_category.id
+    "SQS_CATEGORIZE_URL" : aws_sqs_queue.categorize.id
   }
 
   # BROWSERLESS LOCALS

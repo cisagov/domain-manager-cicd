@@ -28,47 +28,58 @@ data "archive_file" "code" {
   output_path = "${path.module}/output/code.zip"
 }
 
-# # ===================================
-# # Sync DB Lambda Function
-# # ===================================
-# resource "aws_lambda_function" "sync_db" {
-#   filename         = data.archive_file.code.output_path
-#   function_name    = "${var.app}-${var.env}-sync_db"
-#   handler          = "lambda_functions.sync_db.handler.lambda_handler"
-#   layers           = [aws_lambda_layer_version.layer.arn]
-#   role             = aws_iam_role.lambda_exec_role.arn
-#   memory_size      = var.sync_db_memory
-#   runtime          = "python3.8"
-#   source_code_hash = data.archive_file.code.output_base64sha256
-#   timeout          = var.sync_db_timeout
+# ===================================
+# Lambda Functions
+# ===================================
+locals {
+  functions = [
+    "categorize",
+    "check_category",
+    "check_category_queue"
+  ]
+}
 
-#   environment {
-#     variables = local.lambda_environment
-#   }
+resource "aws_lambda_function" "function" {
+  count            = length(local.functions)
+  function_name    = "${var.app}-${var.env}-${element(local.functions, count.index)}"
+  filename         = data.archive_file.code.output_path
+  handler          = "lambda_functions.${element(local.functions, count.index)}.handler"
+  layers           = [aws_lambda_layer_version.layer.arn]
+  role             = aws_iam_role.lambda_exec_role.arn
+  memory_size      = 4096
+  runtime          = "python3.8"
+  source_code_hash = data.archive_file.code.output_base64sha256
+  timeout          = 900
 
-#   vpc_config {
-#     subnet_ids         = var.private_subnet_ids
-#     security_group_ids = [aws_security_group.api.id]
-#   }
-# }
+  environment {
+    variables = local.lambda_environment
+  }
+
+  vpc_config {
+    subnet_ids         = var.private_subnet_ids
+    security_group_ids = [aws_security_group.api.id]
+  }
+}
 
 # ===================================
-# Sync DB CloudWatch Event
+# Queue Check Category Cloudwatch
 # ===================================
-# resource "aws_cloudwatch_event_rule" "syncdb" {
-#   name                = "${var.app}-${var.env}-sync_db"
-#   description         = "Schedule to run Sync DB Lambda Function"
-#   schedule_expression = var.sync_db_schedule
-# }
-# resource "aws_cloudwatch_event_target" "syncdb" {
-#   rule      = aws_cloudwatch_event_rule.syncdb.name
-#   target_id = "lambda"
-#   arn       = aws_lambda_function.sync_db.arn
-# }
-# resource "aws_lambda_permission" "sync_db" {
-#   statement_id  = "AllowExecutionFromCloudWatch"
-#   action        = "lambda:InvokeFunction"
-#   function_name = aws_lambda_function.sync_db.function_name
-#   principal     = "events.amazonaws.com"
-#   source_arn    = aws_cloudwatch_event_rule.syncdb.arn
-# }
+resource "aws_cloudwatch_event_rule" "check_category_queue" {
+  name                = "${var.app}-${var.env}-check_category_queue"
+  description         = "Schedule to queue check category"
+  schedule_expression = "rate(8 hours)"
+}
+
+resource "aws_cloudwatch_event_target" "check_category_queue" {
+  rule      = aws_cloudwatch_event_rule.check_category_queue.name
+  target_id = "lambda"
+  arn       = aws_lambda_function.function[index(local.functions, "check_category_queue")].arn
+}
+
+resource "aws_lambda_permission" "check_category_queue" {
+  statement_id  = "AllowExecutionFromCloudWatch"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.function[index(local.functions, "check_category_queue")].function_name
+  principal     = "events.amazonaws.com"
+  source_arn    = aws_lambda_function.function[index(local.functions, "check_category_queue")].arn
+}

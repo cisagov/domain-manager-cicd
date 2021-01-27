@@ -20,12 +20,6 @@ public_subnet_ids = [
 
 vpc_id = "vpc-074f7db64238a2d16"
 
-
-#=================================================
-#  PERMISSIONS
-#=================================================
-allowed_actions = ["acm:*", "s3:*", "route53:*", "cloudfront:*"]
-
 #=================================================
 #  COGNITO
 #=================================================
@@ -67,13 +61,6 @@ ui_image_repo = "780016325729.dkr.ecr.us-east-1.amazonaws.com/domain-manager-ui"
 ui_cpu = 2048
 ui_memory = 4096
 ui_desired_count = 1
-
-#=================================================
-#  SYNC DB Lambda Function
-#=================================================
-sync_db_memory = 128
-sync_db_timeout = 300
-sync_db_schedule = "rate(1 hour)"
 
 #=================================================
 #  BROWSERLESS

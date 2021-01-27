@@ -28,15 +28,6 @@ variable "public_subnet_ids" {
   type = list(string)
 }
 
-
-#=================================================
-#  PERMISSIONS
-#=================================================
-variable "allowed_actions" {
-  type    = list(string)
-  default = ["s3:*", "route53:*"]
-}
-
 #=================================================
 #  COGNITO
 #=================================================
@@ -122,21 +113,6 @@ variable "ui_cpu" {
 
 variable "ui_desired_count" {
   type = number
-}
-
-#=================================================
-#  SYNC DB Lambda Function
-#=================================================
-variable "sync_db_memory" {
-  type = number
-}
-
-variable "sync_db_timeout" {
-  type = number
-}
-
-variable "sync_db_schedule" {
-  type = string
 }
 
 #=================================================
