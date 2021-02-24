@@ -116,6 +116,47 @@ resource "aws_iam_role_policy_attachment" "policy1" {
 # ------------------------------------------------------------------------------
 # ECS, ELB, EVENTS
 # ------------------------------------------------------------------------------
+data "aws_iam_policy_document" "ecr" {
+  statement {
+    actions = [
+      "ecr:BatchCheckLayerAvailability",
+      "ecr:BatchDeleteImage",
+      "ecr:BatchGetImage",
+      "ecr:CompleteLayerUpload",
+      "ecr:CreateRepository",
+      "ecr:DeleteLifecyclePolicy",
+      "ecr:DeleteRepository",
+      "ecr:DeleteRepositoryPolicy",
+      "ecr:DescribeImages",
+      "ecr:GetLifecyclePolicy",
+      "ecr:GetRepositoryPolicy",
+      "ecr:InitiateLayerUpload",
+      "ecr:ListImages",
+      "ecr:PutImage",
+      "ecr:PutLifecyclePolicy",
+      "ecr:SetRepositoryPolicy",
+      "ecr:UploadLayerPart"
+    ]
+
+
+    resources = ["arn:aws:ecr:*:*:repository/domain-manager-*"]
+  }
+
+  statement {
+    actions = [
+      "ecr:DescribeRegistry",
+      "ecr:DescribeRepositories",
+      "ecr:GetAuthorizationToken",
+      "ecr:ListTagsForResource",
+      "ecr:TagResource",
+      "ecr:UntagResource"
+    ]
+
+    resources = ["*"]
+  }
+}
+
+
 data "aws_iam_policy_document" "policy2" {
 
   statement {
