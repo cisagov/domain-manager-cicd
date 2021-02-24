@@ -72,10 +72,5 @@ locals {
 
   ui_environment = {
     "API_URL" : "https://${aws_route53_record.domain.name}"
-    "AWS_PROJECT_REGION" : var.region
-    "AWS_USER_POOLS_ID" : aws_cognito_user_pool.pool.id
-    "OAUTH_DOMAIN" : "${aws_cognito_user_pool_domain.domain.domain}.auth.${var.region}.amazoncognito.com"
-    "OAUTH_REDIRECT_URL" : "https://${aws_route53_record.domain.name}"
-    "AWS_USER_POOLS_WEB_CLIENT_ID" : aws_cognito_user_pool_client.client.id
   }
 }
