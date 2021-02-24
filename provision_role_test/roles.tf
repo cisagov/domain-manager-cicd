@@ -210,10 +210,12 @@ data "aws_iam_policy_document" "ecs_task" {
       "cognito-idp:AdminDisableUser",
       "cognito-idp:AdminEnableUser",
       "cognito-idp:AdminGetUser",
+      "cognito-idp:AdminInitiateAuth",
       "cognito-idp:AdminListDevices",
       "cognito-idp:AdminListGroupsForUser",
       "cognito-idp:AdminRemoveUserFromGroup",
       "cognito-idp:AdminResetUserPassword",
+      "cognito-idp:SignUp",
     ]
 
     resources = ["*"]
