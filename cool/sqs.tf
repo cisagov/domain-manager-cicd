@@ -5,12 +5,12 @@ resource "aws_sqs_queue" "categorize" {
   tags                       = local.tags
 }
 
-resource "aws_lambda_event_source_mapping" "categorize" {
-  event_source_arn = aws_sqs_queue.categorize.arn
-  enabled          = true
-  function_name    = aws_lambda_function.function[index(local.functions, "categorize")].function_name
-  batch_size       = 1
-}
+# resource "aws_lambda_event_source_mapping" "categorize" {
+#   event_source_arn = aws_sqs_queue.categorize.arn
+#   enabled          = true
+#   function_name    = aws_lambda_function.function[index(local.functions, "categorize")].function_name
+#   batch_size       = 1
+# }
 
 # Check Category Queue
 resource "aws_sqs_queue" "check_category" {
@@ -19,9 +19,9 @@ resource "aws_sqs_queue" "check_category" {
   tags                       = local.tags
 }
 
-resource "aws_lambda_event_source_mapping" "check_category" {
-  event_source_arn = aws_sqs_queue.check_category.arn
-  enabled          = true
-  function_name    = aws_lambda_function.function[index(local.functions, "check_category")].function_name
-  batch_size       = 1
-}
+# resource "aws_lambda_event_source_mapping" "check_category" {
+#   event_source_arn = aws_sqs_queue.check_category.arn
+#   enabled          = true
+#   function_name    = aws_lambda_function.function[index(local.functions, "check_category")].function_name
+#   batch_size       = 1
+# }

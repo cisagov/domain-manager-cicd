@@ -1,3 +1,9 @@
+locals {
+  browserless_port           = 3000
+  browserless_name           = "${var.app}-${var.env}-browser"
+  browserless_container_name = "browserless"
+}
+
 # ===========================
 # TARGET GROUP
 # ===========================
@@ -6,7 +12,7 @@ resource "aws_lb_target_group" "browserless" {
   port        = local.browserless_port
   protocol    = "TCP"
   target_type = "ip"
-  vpc_id      = var.vpc_id
+  vpc_id      = local.vpc_id
   tags        = local.tags
 
   health_check {
@@ -38,7 +44,7 @@ resource "aws_lb_listener" "browserless" {
 resource "aws_security_group" "browserless" {
   name        = local.browserless_name
   description = "Allow traffic for browserless chrome from alb"
-  vpc_id      = var.vpc_id
+  vpc_id      = local.vpc_id
 
   ingress {
     description = "Allow traffic to containers"
@@ -75,7 +81,7 @@ resource "aws_cloudwatch_log_group" "browserless" {
 # CONTAINER DEFINITION
 # ===========================
 module "browserless_container" {
-  source          = "github.com/cloudposse/terraform-aws-ecs-container-definition"
+  source          = "git::https://github.com/cloudposse/terraform-aws-ecs-container-definition.git?ref=tags/0.47.0"
   container_name  = local.browserless_container_name
   container_image = "browserless/chrome:latest"
   essential       = "true"
@@ -111,11 +117,11 @@ resource "aws_ecs_task_definition" "browserless" {
   family                   = local.browserless_name
   container_definitions    = module.browserless_container.json_map_encoded_list
   cpu                      = var.browserless_cpu
-  execution_role_arn       = aws_iam_role.ecs_execution.arn
+  execution_role_arn       = local.ecs_execution_role
   memory                   = var.browserless_memory
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
-  task_role_arn            = aws_iam_role.ecs_task.arn
+  task_role_arn            = local.ecs_task_role
   tags                     = local.tags
 }
 
@@ -137,7 +143,7 @@ resource "aws_ecs_service" "browserless" {
   }
 
   network_configuration {
-    subnets          = var.private_subnet_ids
+    subnets          = local.private_subnet_ids
     security_groups  = [aws_security_group.browserless.id]
     assign_public_ip = false
   }

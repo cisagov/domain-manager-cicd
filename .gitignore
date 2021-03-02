@@ -3,6 +3,5 @@
 .terraform
 terraform/layer
 terraform/output
-cool/output
-cool/layer
 debug.log
+*.zip

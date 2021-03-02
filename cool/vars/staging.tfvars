@@ -1,29 +1,27 @@
 #=================================================
+#  PROVIDER
+#=================================================
+github_actions_role = "arn:aws:iam::337222217072:role/ProvisionDomainManager"
+shared_services_role = "arn:aws:iam::767583904664:role/ProvisionPrivateDNSRecords"
+workspace_type = "staging"
+account_id = "337222217072"
+
+#=================================================
 #  CORE
 #=================================================
-env = "test"
-app = "dm-cool"
+env = "staging"
+app = "domain-manager"
 region = "us-east-1"
 
 #=================================================
-#  NETWORK
+#  ROUTE 53
 #=================================================
-private_subnet_ids = [
-    "subnet-0153f175feb0dfce5",
-    "subnet-02f0f6199dd75238b"
-]
-
-public_subnet_ids = [
-    "subnet-0a365c16b67a2b6b0",
-    "subnet-0ea8f699bed93417c"
-]
-
-vpc_id = "vpc-074f7db64238a2d16"
+internal_route53_record = "domain-manager.staging.cool.cyber.dhs.gov"
 
 #=================================================
-#  COGNITO
+#  DOCKER
 #=================================================
-additional_redirect = "http://localhost:4200"
+image_url = "337222217072.dkr.ecr.us-east-1.amazonaws.com"
 
 #=================================================
 #  LOGS
@@ -36,11 +34,6 @@ log_retention_days = 7
 idle_timeout = 600
 
 #=================================================
-#  ROUTE 53
-#=================================================
-route53_zone_name = "inltesting.xyz"
-
-#=================================================
 #  DOCUMENTDB
 #=================================================
 documentdb_cluster_size = 1
@@ -49,8 +42,7 @@ documentdb_instance_class = "db.r5.large"
 #=================================================
 #  API
 #=================================================
-api_image_repo = "780016325729.dkr.ecr.us-east-1.amazonaws.com/domain-manager-api"
-api_image_tag = "1fa7353"
+api_image_repo = "domain-manager-api"
 api_cpu = 2048
 api_memory = 4096
 api_desired_count = 1
@@ -58,8 +50,7 @@ api_desired_count = 1
 #=================================================
 #  UI
 #=================================================
-ui_image_repo = "780016325729.dkr.ecr.us-east-1.amazonaws.com/domain-manager-ui"
-ui_image_tag = "04d407d"
+ui_image_repo = "domain-manager-ui"
 ui_cpu = 2048
 ui_memory = 4096
 ui_desired_count = 1

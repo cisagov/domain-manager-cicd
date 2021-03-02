@@ -1,4 +1,31 @@
 #=================================================
+#  PROVIDER
+#=================================================
+variable "github_actions_role" {
+  type = string
+}
+
+variable "shared_services_role" {
+  type = string
+}
+
+variable "workspace_type" {
+  type = string
+}
+
+variable "account_id" {
+  type = string
+}
+
+#=================================================
+#  PROVISION ACCOUNT
+#=================================================
+variable "provision_account_role_name" {
+  type    = string
+  default = "ProvisionDomainManager"
+}
+
+#=================================================
 #  CORE
 #=================================================
 variable "env" {
@@ -14,26 +41,17 @@ variable "region" {
 }
 
 #=================================================
-#  NETWORK
+#  ROUTE 53
 #=================================================
-variable "vpc_id" {
+variable "internal_route53_record" {
   type = string
 }
 
-variable "private_subnet_ids" {
-  type = list(string)
-}
-
-variable "public_subnet_ids" {
-  type = list(string)
-}
-
 #=================================================
-#  COGNITO
+#  DOCKER
 #=================================================
-variable "additional_redirect" {
-  type    = string
-  default = ""
+variable "image_url" {
+  type = string
 }
 
 #=================================================
@@ -49,13 +67,6 @@ variable "log_retention_days" {
 variable "idle_timeout" {
   type    = number
   default = 600
-}
-
-#=================================================
-#  ROUTE 53
-#=================================================
-variable "route53_zone_name" {
-  type = string
 }
 
 #=================================================

@@ -1,16 +1,17 @@
-# ===================================
-# Route 53
-# ===================================
-resource "aws_route53_zone" "zone" {
-  name = "cool.${var.env}.${var.route53_zone_name}"
-  tags = local.tags
+locals {
+    cool_dns_private_zone = data.terraform_remote_state.sharedservices_networking.outputs.private_zone
 }
 
+resource "aws_route53_record" "sharedservices_internal_domainmanager" {
+    provider = aws.dns_sharedservices
 
-resource "aws_route53_record" "domain" {
-  zone_id = aws_route53_zone.zone.zone_id
-  name    = "${var.app}.${aws_route53_zone.zone.name}"
-  type    = "CNAME"
-  ttl     = "300"
-  records = [module.alb.alb_dns_name]
+    zone_id = local.cool_dns_private_zone.zone_id
+    name    = var.internal_route53_record
+    type = "A"
+
+    alias {
+      name = module.alb.alb_dns_name
+      zone_id = module.alb.alb_zone_id
+      evaluate_target_health = false
+    }
 }
