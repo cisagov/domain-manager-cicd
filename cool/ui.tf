@@ -32,24 +32,24 @@ resource "aws_lb_target_group" "ui" {
   }
 }
 
-# #=========================
-# # ALB LISTENER RULE
-# #=========================
-# resource "aws_lb_listener_rule" "ui" {
-#   listener_arn = aws_lb_listener.https.arn
-#   priority     = 200
+#=========================
+# ALB LISTENER RULE
+#=========================
+resource "aws_lb_listener_rule" "ui" {
+  listener_arn = aws_lb_listener.https.arn
+  priority     = 200
 
-#   action {
-#     type             = "forward"
-#     target_group_arn = aws_lb_target_group.ui.arn
-#   }
+  action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.ui.arn
+  }
 
-#   condition {
-#     path_pattern {
-#       values = ["/", "/*", "*"]
-#     }
-#   }
-# }
+  condition {
+    path_pattern {
+      values = ["/", "/*", "*"]
+    }
+  }
+}
 
 # ===========================
 # CLOUDWATCH LOGS
@@ -111,26 +111,26 @@ resource "aws_ecs_task_definition" "ui" {
 #=========================
 # SERVICE
 #=========================
-# resource "aws_ecs_service" "ui" {
-#   name            = local.ui_container_name
-#   cluster         = aws_ecs_cluster.cluster.id
-#   task_definition = aws_ecs_task_definition.ui.arn
-#   desired_count   = var.ui_desired_count
-#   launch_type     = "FARGATE"
-#   tags            = local.tags
+resource "aws_ecs_service" "ui" {
+  name            = local.ui_container_name
+  cluster         = aws_ecs_cluster.cluster.id
+  task_definition = aws_ecs_task_definition.ui.arn
+  desired_count   = var.ui_desired_count
+  launch_type     = "FARGATE"
+  tags            = local.tags
 
-#   load_balancer {
-#     target_group_arn = aws_lb_target_group.ui.arn
-#     container_name   = local.ui_container_name
-#     container_port   = local.ui_container_port
-#   }
+  load_balancer {
+    target_group_arn = aws_lb_target_group.ui.arn
+    container_name   = local.ui_container_name
+    container_port   = local.ui_container_port
+  }
 
-#   network_configuration {
-#     subnets          = local.private_subnet_ids
-#     security_groups  = [aws_security_group.ui.id]
-#     assign_public_ip = false
-#   }
-# }
+  network_configuration {
+    subnets          = local.private_subnet_ids
+    security_groups  = [aws_security_group.ui.id]
+    assign_public_ip = false
+  }
+}
 
 # ===========================
 # SECURITY GROUP

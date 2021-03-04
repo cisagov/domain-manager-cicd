@@ -148,33 +148,33 @@ resource "aws_ecs_task_definition" "api" {
   tags                     = local.tags
 }
 
-# #=========================
-# # SERVICE
-# #=========================
-# resource "aws_ecs_service" "api" {
-#   name            = local.api_container_name
-#   cluster         = aws_ecs_cluster.cluster.id
-#   task_definition = aws_ecs_task_definition.api.arn
-#   desired_count   = var.api_desired_count
-#   launch_type     = "FARGATE"
-#   tags            = local.tags
+#=========================
+# SERVICE
+#=========================
+resource "aws_ecs_service" "api" {
+  name            = local.api_container_name
+  cluster         = aws_ecs_cluster.cluster.id
+  task_definition = aws_ecs_task_definition.api.arn
+  desired_count   = var.api_desired_count
+  launch_type     = "FARGATE"
+  tags            = local.tags
 
-#   load_balancer {
-#     target_group_arn = aws_lb_target_group.api.arn
-#     container_name   = local.api_container_name
-#     container_port   = local.api_container_port
-#   }
+  load_balancer {
+    target_group_arn = aws_lb_target_group.api.arn
+    container_name   = local.api_container_name
+    container_port   = local.api_container_port
+  }
 
-#   network_configuration {
-#     subnets          = local.private_subnet_ids
-#     security_groups  = [aws_security_group.api.id]
-#     assign_public_ip = false
-#   }
+  network_configuration {
+    subnets          = local.private_subnet_ids
+    security_groups  = [aws_security_group.api.id]
+    assign_public_ip = false
+  }
 
-#   lifecycle {
-#     ignore_changes = [desired_count]
-#   }
-# }
+  lifecycle {
+    ignore_changes = [desired_count]
+  }
+}
 
 # ===========================
 # SECURITY GROUP
