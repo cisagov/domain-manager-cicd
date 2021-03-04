@@ -81,24 +81,24 @@ resource "aws_lb_target_group" "api" {
   }
 }
 
-# #=========================
-# # ALB LISTENER RULE
-# #=========================
-# resource "aws_lb_listener_rule" "api" {
-#   listener_arn = aws_lb_listener.https.arn
-#   priority     = 100
+#=========================
+# ALB LISTENER RULE
+#=========================
+resource "aws_lb_listener_rule" "api" {
+  listener_arn = aws_lb_listener.https.arn
+  priority     = 100
 
-#   action {
-#     type             = "forward"
-#     target_group_arn = aws_lb_target_group.api.arn
-#   }
+  action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.api.arn
+  }
 
-#   condition {
-#     path_pattern {
-#       values = ["/api/*", "/api/", "/api"]
-#     }
-#   }
-# }
+  condition {
+    path_pattern {
+      values = ["/api/*", "/api/", "/api"]
+    }
+  }
+}
 
 # ===========================
 # CONTAINER DEFINITION

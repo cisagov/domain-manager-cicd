@@ -1,9 +1,3 @@
-# # ===========================
-# # Certs
-# # ===========================
-# module "acm" {
-#   source      = "github.com/terraform-aws-modules/terraform-aws-acm"
-#   domain_name = aws_route53_record.domain.name
-#   zone_id     = aws_route53_zone.zone.zone_id
-#   tags        = local.tags
-# }
+locals {
+  cert_arn = data.terraform_remote_state.userservices_dns.outputs.domainmanager_certificate.arn
+}

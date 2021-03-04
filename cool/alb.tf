@@ -37,22 +37,22 @@ module "alb" {
 # # ===================================
 # # Listener
 # # ===================================
-# resource "aws_lb_listener" "https" {
-#   load_balancer_arn = module.alb.alb_arn
-#   port              = 443
-#   protocol          = "HTTPS"
-#   certificate_arn   = module.acm.this_acm_certificate_arn
+resource "aws_lb_listener" "https" {
+  load_balancer_arn = module.alb.alb_arn
+  port              = 443
+  protocol          = "HTTPS"
+  certificate_arn   = local.cert_arn
 
-#   default_action {
-#     type = "fixed-response"
+  default_action {
+    type = "fixed-response"
 
-#     fixed_response {
-#       content_type = "text/plain"
-#       message_body = "${var.app}-${var.env} fixed response"
-#       status_code  = 200
-#     }
-#   }
-# }
+    fixed_response {
+      content_type = "text/plain"
+      message_body = "${var.app}-${var.env} fixed response"
+      status_code  = 200
+    }
+  }
+}
 
 
 #=================================================

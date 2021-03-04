@@ -1,9 +1,9 @@
 # Categorize Queue
-resource "aws_sqs_queue" "categorize" {
-  name                       = "${var.app}-${var.env}-categorize"
-  visibility_timeout_seconds = 900
-  tags                       = local.tags
-}
+# resource "aws_sqs_queue" "categorize" {
+#   name                       = "${var.app}-${var.env}-categorize"
+#   visibility_timeout_seconds = 900
+#   tags                       = local.tags
+# }
 
 # resource "aws_lambda_event_source_mapping" "categorize" {
 #   event_source_arn = aws_sqs_queue.categorize.arn
@@ -13,11 +13,11 @@ resource "aws_sqs_queue" "categorize" {
 # }
 
 # Check Category Queue
-resource "aws_sqs_queue" "check_category" {
-  name                       = "${var.app}-${var.env}-check_category"
-  visibility_timeout_seconds = 900
-  tags                       = local.tags
-}
+# resource "aws_sqs_queue" "check_category" {
+#   name                       = "${var.app}-${var.env}-check_category"
+#   visibility_timeout_seconds = 900
+#   tags                       = local.tags
+# }
 
 # resource "aws_lambda_event_source_mapping" "check_category" {
 #   event_source_arn = aws_sqs_queue.check_category.arn
