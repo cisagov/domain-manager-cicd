@@ -5,3 +5,4 @@ terraform/layer
 terraform/output
 debug.log
 *.zip
+.DS_Store
