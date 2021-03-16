@@ -77,6 +77,8 @@ data "aws_iam_policy_document" "provision_acm_cloudwatch_cognito_ec2_doc" {
       "cognito-idp:ListUserPools",
       "cognito-idp:TagResource",
     ]
+
+    resources = ["*"]
   }
 
   # EC2
