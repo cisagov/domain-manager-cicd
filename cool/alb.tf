@@ -19,7 +19,7 @@ resource "aws_security_group" "alb" {
 }
 
 module "alb" {
-  source              = "github.com/cloudposse/terraform-aws-alb"
+  source              = "git::https://github.com/cloudposse/terraform-aws-alb.git?ref=tags/0.28.0"
   namespace           = var.app
   stage               = var.env
   name                = "alb"

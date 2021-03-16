@@ -1,10 +1,10 @@
 #=================================================
 #  PROVIDER
 #=================================================
-github_actions_role = "arn:aws:iam::337222217072:role/ProvisionDomainManager"
+github_actions_role = "arn:aws:iam::719488448316:role/ProvisionAccount"
 shared_services_role = "arn:aws:iam::767583904664:role/ProvisionPrivateDNSRecords"
 workspace_type = "staging"
-account_id = "337222217072"
+account_id = "719488448316"
 
 #=================================================
 #  CORE
@@ -21,7 +21,7 @@ internal_route53_record = "domain-manager.staging.cool.cyber.dhs.gov"
 #=================================================
 #  DOCKER
 #=================================================
-image_url = "337222217072.dkr.ecr.us-east-1.amazonaws.com"
+image_url = "719488448316.dkr.ecr.us-east-1.amazonaws.com"
 
 #=================================================
 #  LOGS

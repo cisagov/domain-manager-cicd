@@ -22,7 +22,7 @@ variable "account_id" {
 #=================================================
 variable "provision_account_role_name" {
   type    = string
-  default = "ProvisionDomainManager"
+  default = "ProvisionAccount"
 }
 
 #=================================================

@@ -117,11 +117,11 @@ resource "aws_ecs_task_definition" "browserless" {
   family                   = local.browserless_name
   container_definitions    = module.browserless_container.json_map_encoded_list
   cpu                      = var.browserless_cpu
-  execution_role_arn       = local.ecs_execution_role
+  execution_role_arn       = aws_iam_role.ecs_execution.arn
   memory                   = var.browserless_memory
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
-  task_role_arn            = local.ecs_task_role
+  task_role_arn            = aws_iam_role.ecs_task.arn
   tags                     = local.tags
 }
 

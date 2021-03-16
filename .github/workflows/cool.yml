@@ -8,8 +8,8 @@ on:
 env:
   AWS_ACCESS_KEY_ID: ${{ secrets.COOL_AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.COOL_AWS_SECRET_ACCESS_KEY }}
-  PRODUCTION_ACCOUNT_ID: "987285204333"
-  STAGING_ACCOUNT_ID: "337222217072"
+  PRODUCTION_ACCOUNT_ID: "779871898657"
+  STAGING_ACCOUNT_ID: "719488448316"
   REGION: us-east-1
   AWS_REGION: us-east-1
   AWS_DEFAULT_REGION: us-east-1
@@ -42,7 +42,7 @@ jobs:
       - name: Set Environment
         run: |
           echo ::set-output name=ENVIRONMENT::$ENVIRONMENT
-          echo ::set-output name=ASSUME_ROLE::$(echo "arn:aws:iam::$ACCOUNT_ID:role/ProvisionDomainManager")
+          echo ::set-output name=ASSUME_ROLE::$(echo "arn:aws:iam::$ACCOUNT_ID:role/ProvisionAccount")
           echo ::set-output name=ECR_URI::$(echo "$ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com")
         id: env
 
