@@ -2,7 +2,7 @@
 #  PROVIDER
 #=================================================
 github_actions_role = "arn:aws:iam::779871898657:role/ProvisionAccount"
-shared_services_role = "arn:aws:iam::767583904664:role/ProvisionPrivateDNSRecords"
+shared_services_role = "arn:aws:iam::121087745329:role/ProvisionPrivateDNSRecords"
 workspace_type = "production"
 account_id = "779871898657"
 
