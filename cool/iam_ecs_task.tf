@@ -82,6 +82,7 @@ data "aws_iam_policy_document" "ecs_task" {
       "route53:CreateHostedZone",
       "route53:DeleteHostedZone",
       "route53:GetHostedZone",
+      "route53:GetHostedZoneCount",
       "route53:ListHostedZones",
       "route53:ListResourceRecordSets",
       "route53:ListTagsForResource"
