@@ -2,12 +2,13 @@
 
 The Domain Management application has several use cases. A user can:
 - setup a domain
-- upload templates
+- setup email records for your domain
+- manage static templates
 - choose from a selection of existing templates
 - upload external web content
 - launch and takedown websites
 - categorize live websites on various categorization proxies
-- manage DNS and Redirect records.
+- manage DNS and Redirect records
 - categorize websites that are not managed by domain management
 
 These functionalities can be done via a browser or the command line interface. Step by step instructions on each use case is detailed below.
@@ -20,9 +21,11 @@ There are two user roles in the application:
     - Admins can create and delete domains, applications, templates, content, and other users.
 - User
     - This role has a much more limited access
-    - Users can upload and download website and template content
+    - Users can generate template content
+    - Upload and download website content
     - Manage DNS and Redirect records
-    - They can also launch and categorize websites.
+    - Launch and categorize websites
+        - Note: launching a website will require approval from an admin
 
 Access via the browser:
 1. Login to the Domain Management
@@ -51,6 +54,6 @@ Access via the Command line Interface (CLI):
 
 ### [Case 2: Command Line Interface](2-cli.md)
 
-### [Case 3: Setting up a domain for Con-PCA](3-con-pca.md)
+### [Case 3: Setting up Email Records](3-email-records.md)
 
 ### [Case 4: Categorize External Websites](4-external.md)

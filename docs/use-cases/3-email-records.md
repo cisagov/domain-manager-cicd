@@ -1,4 +1,6 @@
-# Set up a Domain for Con-PCA
+# Set up a Domain with Email Records
+
+A user can utilize Domain Management to setup a domain for sending emails.
 
 1. If you haven't already, purchase your domain at a registrar (i.e. NameCheap, GoDaddy, etc)
 2. Login to Domain Management and click on `Domains` on the left
@@ -19,7 +21,7 @@
 
    <img src="images/dns-records.png" width="250">
 
-   - You can add Email records that can be used with Con-PCA
+   - You can add Email records that can be used in conjunction with other applications.
 
 6. You will have to create redirects to the Landing Page Url.
    - gp.pr.somedomain.net -> con-pca.cool.cyber.dhs.gov
