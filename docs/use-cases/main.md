@@ -51,6 +51,6 @@ Access via the Command line Interface (CLI):
 
 ### [Case 2: Command Line Interface](2-cli.md)
 
-### [Case 3: Setting up a domain for Con-PCA](3-con-pca.md)
+### [Case 3: Setting up Email Records](3-email-records.md)
 
 ### [Case 4: Categorize External Websites](4-external.md)
