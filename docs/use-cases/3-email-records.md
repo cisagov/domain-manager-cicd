@@ -1,5 +1,7 @@
 # Set up a Domain with Email Records
 
+A user can utilize Domain Management to setup a domain for sending emails.
+
 1. If you haven't already, purchase your domain at a registrar (i.e. NameCheap, GoDaddy, etc)
 2. Login to Domain Management and click on `Domains` on the left
 3. Click on `Add New Domain` button on the top right and type in the domain you've purchased

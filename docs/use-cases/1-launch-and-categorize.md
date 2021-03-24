@@ -8,7 +8,7 @@
 
     - This will create a hosted zone for your domain so that Domain Management can manage your domain's DNS records and content.
     - For user roles
-        - Search for the domain you'd like to setup and launch.
+        - __Search__ for the domain you'd like to setup and launch.
         - If the domain doesn't exist, reach out to an admin to create the domain for you.
 
 4. Once your domain has been created, click on your domain and then click the `Hosted Zone` tab
