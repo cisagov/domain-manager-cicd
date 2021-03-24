@@ -21,9 +21,11 @@ There are two user roles in the application:
     - Admins can create and delete domains, applications, templates, content, and other users.
 - User
     - This role has a much more limited access
-    - Users can upload and download website and template content
+    - Users can generate template content
+    - Upload and download website content
     - Manage DNS and Redirect records
-    - They can also launch and categorize websites.
+    - Launch and categorize websites
+        - Note: launching a website will require approval from an admin
 
 Access via the browser:
 1. Login to the Domain Management
