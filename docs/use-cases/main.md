@@ -2,12 +2,13 @@
 
 The Domain Management application has several use cases. A user can:
 - setup a domain
-- upload templates
+- setup email records for your domain
+- manage static templates
 - choose from a selection of existing templates
 - upload external web content
 - launch and takedown websites
 - categorize live websites on various categorization proxies
-- manage DNS and Redirect records.
+- manage DNS and Redirect records
 - categorize websites that are not managed by domain management
 
 These functionalities can be done via a browser or the command line interface. Step by step instructions on each use case is detailed below.
