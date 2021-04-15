@@ -113,6 +113,15 @@ data "aws_iam_policy_document" "ecs_task" {
 
     resources = ["*"]
   }
+
+  # STS
+  statement {
+    actions = [
+      "sts:AssumeRole"
+    ]
+
+    resources = ["*"]
+  }
 }
 
 resource "aws_iam_policy" "ecs_task" {
