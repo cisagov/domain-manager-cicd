@@ -9,6 +9,7 @@ locals {
     "cloudfront:*",
     "cognito-identity:*",
     "cognito-idp:*",
+    "sts:AssumeRole",
   ]
   # API LOCALS
   api_name               = "${var.app}-${var.env}-api"
