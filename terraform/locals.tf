@@ -42,20 +42,8 @@ locals {
     "AWS_COGNITO_USER_POOL_CLIENT_ID" : aws_cognito_user_pool_client.client.id
     "AWS_COGNITO_ADMIN_GROUP_NAME" : aws_cognito_user_group.admin.name
     "TWO_CAPTCHA" : data.aws_ssm_parameter.two_captcha.value
-  }
-
-  lambda_environment = {
-    "BROWSERLESS_ENDPOINT" : "${aws_lb.network.dns_name}:${local.browserless_port}"
-    "DB_HOST" : module.documentdb.endpoint
-    "DB_PORT" : 27017
-    "DB_PW" : aws_ssm_parameter.docdb_password.value
-    "DB_USER" : aws_ssm_parameter.docdb_username.value
-    "MONGO_TYPE" : "DOCUMENTDB"
-    "TEMPLATE_BUCKET" : aws_s3_bucket.templates.id
-    "WEBSITE_BUCKET" : aws_s3_bucket.websites.id
-    "TWO_CAPTCHA" : data.aws_ssm_parameter.two_captcha.value
-    "SQS_CHECK_CATEGORY_URL" : aws_sqs_queue.check_category.id
-    "SQS_CATEGORIZE_URL" : aws_sqs_queue.categorize.id
+    "SES_ASSUME_ROLE_ARN" : "arn:aws:iam::246048611598:role/SesSendEmail-cyber.dhs.gov"
+    "SMTP_FROM" : "domainmanager@cyber.dhs.gov"
   }
 
   # BROWSERLESS LOCALS
