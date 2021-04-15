@@ -19,8 +19,6 @@ locals {
     "STATIC_GEN_URL" : "http://localhost:8000"
     "TEMPLATE_BUCKET" : aws_s3_bucket.templates.id
     "WEBSITE_BUCKET" : aws_s3_bucket.websites.id
-    # "SQS_CHECK_CATEGORY_URL" : aws_sqs_queue.check_category.id
-    # "SQS_CATEGORIZE_URL" : aws_sqs_queue.categorize.id
     "BROWSERLESS_ENDPOINT" : "${aws_lb.network.dns_name}:${local.browserless_port}"
     "WORKERS" : 6
     "AWS_REGION" : var.region
