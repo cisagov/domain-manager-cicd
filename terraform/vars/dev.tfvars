@@ -44,7 +44,7 @@ route53_zone_name = "inltesting.xyz"
 #  DOCUMENTDB
 #=================================================
 documentdb_cluster_size = 1
-documentdb_instance_class = "db.r5.large"
+documentdb_instance_class = "db.t3.medium"
 
 #=================================================
 #  API
