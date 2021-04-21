@@ -14,6 +14,11 @@ app = "domain-manager"
 region = "us-east-1"
 
 #=================================================
+#  EMAILS NOTIFICATIONS
+#=================================================
+new_user_notification_email_address = "domainmanager-aaaacmecaofdaenpbzd4gkrxoq@cset-group.slack.com"
+
+#=================================================
 #  ROUTE 53
 #=================================================
 internal_route53_record = "domain-manager.staging.cool.cyber.dhs.gov"

@@ -14,6 +14,11 @@ app = "domain-manager"
 region = "us-east-1"
 
 #=================================================
+#  EMAILS NOTIFICATIONS
+#=================================================
+new_user_notification_email_address = "CISA.CSD.VM_Assessments_DomainManagement@cisa.dhs.gov"
+
+#=================================================
 #  ROUTE 53
 #=================================================
 internal_route53_record = "domain-manager.cool.cyber.dhs.gov"
