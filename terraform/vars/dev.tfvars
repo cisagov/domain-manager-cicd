@@ -6,6 +6,11 @@ app = "dm"
 region = "us-east-1"
 
 #=================================================
+#  EMAILS NOTIFICATIONS
+#=================================================
+new_user_notification_email_address = "domainmanager-aaaacmecaofdaenpbzd4gkrxoq@cset-group.slack.com"
+
+#=================================================
 #  NETWORK
 #=================================================
 private_subnet_ids = [

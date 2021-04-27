@@ -31,6 +31,7 @@ locals {
     "TWO_CAPTCHA" : aws_ssm_parameter.two_captcha.value
     "SES_ASSUME_ROLE_ARN" : "arn:aws:iam::246048611598:role/SesSendEmail-cyber.dhs.gov"
     "SMTP_FROM" : "domainmanager@cyber.dhs.gov"
+    "NEW_USER_NOTIFICATION_EMAIL_ADDRESS": var.new_user_notification_email_address
   }
 }
 

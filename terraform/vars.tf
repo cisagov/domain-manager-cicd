@@ -14,6 +14,14 @@ variable "region" {
 }
 
 #=================================================
+#  EMAILS NOTIFICATIONS
+#=================================================
+variable "new_user_notification_email_address" {
+  type = string
+  description = "An admin email group for notifiying when a new user is registered"
+}
+
+#=================================================
 #  NETWORK
 #=================================================
 variable "vpc_id" {
