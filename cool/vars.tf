@@ -41,6 +41,15 @@ variable "region" {
 }
 
 #=================================================
+#  EMAILS NOTIFICATIONS
+#=================================================
+variable "new_user_notification_email_address" {
+  type = string
+  description = "An admin email group for notifiying when a new user is registered"
+}
+
+
+#=================================================
 #  ROUTE 53
 #=================================================
 variable "internal_route53_record" {
