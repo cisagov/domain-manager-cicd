@@ -1,7 +1,6 @@
 #=================================================
 #  PROVIDER
 #=================================================
-github_actions_role = "arn:aws:iam::719488448316:role/ProvisionAccount"
 shared_services_role = "arn:aws:iam::767583904664:role/ProvisionPrivateDNSRecords"
 workspace_type = "staging"
 account_id = "719488448316"

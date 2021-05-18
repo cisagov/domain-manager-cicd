@@ -1,10 +1,6 @@
 #=================================================
 #  PROVIDER
 #=================================================
-variable "github_actions_role" {
-  type = string
-}
-
 variable "shared_services_role" {
   type = string
 }

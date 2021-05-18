@@ -116,4 +116,10 @@ jobs:
       # Apply terraform
       - name: Terraform Plan
         working-directory: ./domain-manager/cool
-        run: terraform plan -input=false -var-file ./vars/$ENVIRONMENT.tfvars -var="api_image_tag=${{needs.tag_api.outputs.tag}}" -var="ui_image_tag=${{needs.tag_ui.outputs.tag}}"
+        run: |
+          terraform plan \
+            -input=false \
+            -var-file ./vars/$ENVIRONMENT.tfvars \
+            -var="api_image_tag=${{needs.tag_api.outputs.tag}}" \
+            -var="ui_image_tag=${{needs.tag_ui.outputs.tag}}" \
+            -var="account_id=$ACCOUNT_ID"

@@ -169,14 +169,27 @@ jobs:
         working-directory: ./domain-manager/cool
         run: terraform init -input=false
 
-      # Apply terraform
+      # terraform plan
       - name: Terraform Plan
         working-directory: ./domain-manager/cool
-        run: terraform plan -input=false -var-file ./vars/$ENVIRONMENT.tfvars -var="api_image_tag=${{needs.build_api.outputs.tag}}" -var="ui_image_tag=${{needs.build_ui.outputs.tag}}"
+        run: |
+          terraform plan \
+            -input=false \
+            -var-file ./vars/$ENVIRONMENT.tfvars \
+            -var="api_image_tag=${{needs.build_api.outputs.tag}}" \
+            -var="ui_image_tag=${{needs.build_ui.outputs.tag}}" \
+            -var="account_id=$ACCOUNT_ID"
 
 
-      # Apply terraform
+      # terraform apply
       - name: Terraform Apply
         working-directory: ./domain-manager/cool
-        run: terraform apply -input=false -auto-approve -var-file ./vars/$ENVIRONMENT.tfvars -var="api_image_tag=${{needs.build_api.outputs.tag}}" -var="ui_image_tag=${{needs.build_ui.outputs.tag}}"
+        run: |
+          terraform apply \
+            -input=false \
+            -auto-approve \
+            -var-file ./vars/$ENVIRONMENT.tfvars \
+            -var="api_image_tag=${{needs.build_api.outputs.tag}}" \
+            -var="ui_image_tag=${{needs.build_ui.outputs.tag}}" \
+            -var="account_id=$ACCOUNT_ID"
 
