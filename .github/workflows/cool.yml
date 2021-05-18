@@ -8,18 +8,19 @@ on:
     types: [deploy, cool_staging, cool_production]
 
 env:
-  AWS_ACCESS_KEY_ID: ${{ secrets.COOL_AWS_ACCESS_KEY_ID }}
-  AWS_SECRET_ACCESS_KEY: ${{ secrets.COOL_AWS_SECRET_ACCESS_KEY }}
+  # COOL Account IDs
   PRODUCTION_ACCOUNT_ID: ${{ secrets.COOL_AWS_PRODUCTION_ACCOUNT_ID }}
   STAGING_ACCOUNT_ID: ${{ secrets.COOL_AWS_STAGING_ACCOUNT_ID }}
+
+  # Shared Services Account IDs
   SHARED_SERVICES_PRODUCTION_ACCOUNT_ID: ${{ secrets.COOL_SHARED_SERVICES_PRODUCTION_ACCOUNT_ID }}
   SHARED_SERVICES_STAGING_ACCOUNT_ID: ${{ secrets.COOL_SHARED_SERVICES_STAGING_ACCOUNT_ID }}
-  REGION: us-east-1
-  AWS_REGION: us-east-1
-  AWS_DEFAULT_REGION: us-east-1
+
+  # Github repositories
   API_IMAGE_REPO: domain-manager-api
   UI_IMAGE_REPO: domain-manager-ui
 
+  # Booleans
   IS_STAGING: ${{ github.event_name == 'push' || github.event.action == 'cool_staging' || github.event.action == 'deploy' }}
   IS_PRODUCTION: ${{ github.event.action == 'cool_production' }}
   IS_PULL_REQUEST: ${{ github.event_name == 'pull_request' }}
@@ -55,6 +56,13 @@ jobs:
         with:
           path: api
           repository: cisagov/domain-manager-api
+
+      # Set default AWS credentials
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.COOL_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.COOL_AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
 
       # Output metadata
       - name: Echo Metadata
@@ -120,13 +128,11 @@ jobs:
         working-directory: ./api/
 
       # Assume provision account role
-      - name: Assume Provision Account Role
-        run: |
-          JSON=$(aws sts assume-role --role-arn $ASSUME_ROLE --role-session-name github-actions --duration 900)
-          echo AWS_ACCESS_KEY_ID=$(echo ${JSON} | jq --raw-output ".Credentials[\"AccessKeyId\"]") >> $GITHUB_ENV
-          echo AWS_SECRET_ACCESS_KEY=$(echo ${JSON} | jq --raw-output ".Credentials[\"SecretAccessKey\"]") >> $GITHUB_ENV
-          echo AWS_SESSION_TOKEN=$(echo ${JSON} | jq --raw-output ".Credentials[\"SessionToken\"]") >> $GITHUB_ENV
-          echo AWS_EXPIRATION=$(echo ${JSON} | jq --raw-output ".Credentials[\"Expiration\"]") >> $GITHUB_ENV
+      - name: Assume provision account role
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: us-east-1
+          role-to-assume: $ASSUME_ROLE
 
       # Confirm assumed role
       - name: Confirm Assumed Role
@@ -145,6 +151,13 @@ jobs:
       - name: Push API
         run: docker push $ECR_URI/$API_IMAGE_REPO:$API_TAG
         if: env.BUILD_API == 'true'
+
+      # Set default AWS credentials
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.COOL_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.COOL_AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
 
       # Initialize Terraform
       - name: Terraform init
