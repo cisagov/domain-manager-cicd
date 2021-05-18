@@ -8,6 +8,9 @@ on:
     types: [deploy, cool_staging, cool_production]
 
 env:
+  # AWS
+  REGION: us-east-1
+
   # COOL Account IDs
   PRODUCTION_ACCOUNT_ID: ${{ secrets.COOL_AWS_PRODUCTION_ACCOUNT_ID }}
   STAGING_ACCOUNT_ID: ${{ secrets.COOL_AWS_STAGING_ACCOUNT_ID }}
@@ -62,7 +65,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.COOL_AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.COOL_AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
+          aws-region: ${{ env.REGION }}
 
       # Output metadata
       - name: Echo Metadata
@@ -131,7 +134,7 @@ jobs:
       - name: Assume provision account role
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-region: us-east-1
+          aws-region: ${{ env.REGION }}
           role-duration-seconds: 1200
           role-to-assume: ${{ env.ASSUME_ROLE }}
           role-skip-session-tagging: true
@@ -159,7 +162,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.COOL_AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.COOL_AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
+          aws-region: ${{ env.REGION }}
 
       # Initialize Terraform
       - name: Terraform init
