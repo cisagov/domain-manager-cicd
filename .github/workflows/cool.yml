@@ -122,7 +122,7 @@ jobs:
       # Assume provision account role
       - name: Assume Provision Account Role
         run: |
-          JSON=$(aws sts assume-role --role-arn $ASSUME_ROLE --role-session-name $IMAGE_REPO-github-actions --duration 900)
+          JSON=$(aws sts assume-role --role-arn $ASSUME_ROLE --role-session-name github-actions --duration 900)
           echo AWS_ACCESS_KEY_ID=$(echo ${JSON} | jq --raw-output ".Credentials[\"AccessKeyId\"]") >> $GITHUB_ENV
           echo AWS_SECRET_ACCESS_KEY=$(echo ${JSON} | jq --raw-output ".Credentials[\"SecretAccessKey\"]") >> $GITHUB_ENV
           echo AWS_SESSION_TOKEN=$(echo ${JSON} | jq --raw-output ".Credentials[\"SessionToken\"]") >> $GITHUB_ENV
