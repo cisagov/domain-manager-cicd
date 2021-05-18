@@ -110,5 +110,5 @@ jobs:
             -var-file ./vars/$ENVIRONMENT.tfvars \
             -var="api_image_tag=${{needs.tag_api.outputs.tag}}" \
             -var="ui_image_tag=${{needs.tag_ui.outputs.tag}}" \
-            -var="account_id=$ACCOUNT_ID"
+            -var="account_id=$ACCOUNT_ID" \
             -var="shared_services_account_id=$SHARED_SERVICES_ACCOUNT_ID"
