@@ -78,7 +78,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: [tag_ui, tag_api, setenv]
     env:
-      ACCOUNT_ID: ${{ needs.setenv.outputs.ACCOUNT_ID }}
       ENVIRONMENT: ${{ needs.setenv.outputs.ENVIRONMENT }}
     steps:
 
@@ -125,4 +124,4 @@ jobs:
             -var-file ./vars/$ENVIRONMENT.tfvars \
             -var="api_image_tag=${{needs.tag_api.outputs.tag}}" \
             -var="ui_image_tag=${{needs.tag_ui.outputs.tag}}" \
-            -var="account_id=$ACCOUNT_ID"
+            -var="account_id=${{needs.setenv.outputs.ACCOUNT_ID}}"
