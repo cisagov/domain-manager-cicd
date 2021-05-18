@@ -18,6 +18,7 @@ jobs:
   setenv:
     runs-on: ubuntu-latest
     outputs:
+      ACCOUNT_ID: ${{ steps.env.outputs.ACCOUNT_ID }}
       ENVIRONMENT: ${{ steps.env.outputs.ENVIRONMENT }}
       ASSUME_ROLE: ${{ steps.env.outputs.ASSUME_ROLE }}
       ECR_URI: ${{ steps.env.outputs.ECR_URI }}
@@ -39,6 +40,7 @@ jobs:
         if: github.event_name == 'push' || github.event.action == 'cool_staging' || github.event.action == 'deploy'
       - name: Set Environment
         run: |
+          echo ::set-output name=ACCOUNT_ID::$(echo "$ACCOUNT_ID")
           echo ::set-output name=ENVIRONMENT::$ENVIRONMENT
           echo ::set-output name=ASSUME_ROLE::$(echo "arn:aws:iam::$ACCOUNT_ID:role/ProvisionAccount")
           echo ::set-output name=ECR_URI::$(echo "$ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com")
