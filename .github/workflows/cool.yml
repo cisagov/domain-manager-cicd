@@ -132,6 +132,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-region: us-east-1
+          role-duration-seconds: 1200
           role-to-assume: ${{ env.ASSUME_ROLE }}
           role-skip-session-tagging: true
 
