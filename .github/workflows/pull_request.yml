@@ -15,6 +15,7 @@ jobs:
   setenv:
     runs-on: ubuntu-latest
     outputs:
+      ACCOUNT_ID: ${{ steps.env.outputs.ACCOUNT_ID }}
       ENVIRONMENT: ${{ steps.env.outputs.ENVIRONMENT }}
       ASSUME_ROLE: ${{ steps.env.outputs.ASSUME_ROLE }}
       ECR_URI: ${{ steps.env.outputs.ECR_URI }}
@@ -31,6 +32,7 @@ jobs:
           echo "ACCOUNT_ID=$STAGING_ACCOUNT_ID" >> $GITHUB_ENV
       - name: Set Environment
         run: |
+          echo ::set-output name=ACCOUNT_ID::$ACCOUNT_ID
           echo ::set-output name=ENVIRONMENT::$ENVIRONMENT
           echo ::set-output name=ASSUME_ROLE::$(echo "arn:aws:iam::$ACCOUNT_ID:role/ProvisionAccount")
           echo ::set-output name=ECR_URI::$(echo "$ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com")
@@ -76,6 +78,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [tag_ui, tag_api, setenv]
     env:
+      ACCOUNT_ID: ${{ needs.setenv.outputs.ACCOUNT_ID }}
       ENVIRONMENT: ${{ needs.setenv.outputs.ENVIRONMENT }}
     steps:
 
