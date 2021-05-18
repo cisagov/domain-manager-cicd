@@ -1,189 +1,198 @@
-# name: COOL Deploy
-# on:
-#   pull_request:
-#     branches: [develop]
-#   push:
-#     branches: [develop]
-#   repository_dispatch:
-#     types: [deploy, cool_staging, cool_production]
+name: COOL Deploy
+on:
+  pull_request:
+    branches: [develop]
+  push:
+    branches: [develop]
+  repository_dispatch:
+    types: [deploy, cool_staging, cool_production]
 
-# env:
-#   AWS_ACCESS_KEY_ID: ${{ secrets.COOL_AWS_ACCESS_KEY_ID }}
-#   AWS_SECRET_ACCESS_KEY: ${{ secrets.COOL_AWS_SECRET_ACCESS_KEY }}
-#   PRODUCTION_ACCOUNT_ID: ${{ secrets.COOL_AWS_PRODUCTION_ACCOUNT_ID }}
-#   STAGING_ACCOUNT_ID: ${{ secrets.COOL_AWS_STAGING_ACCOUNT_ID }}
-#   SHARED_SERVICES_PRODUCTION_ACCOUNT_ID: ${{ secrets.COOL_SHARED_SERVICES_PRODUCTION_ACCOUNT_ID }}
-#   SHARED_SERVICES_STAGING_ACCOUNT_ID: ${{ secrets.COOL_SHARED_SERVICES_STAGING_ACCOUNT_ID }}
-#   REGION: us-east-1
-#   AWS_REGION: us-east-1
-#   AWS_DEFAULT_REGION: us-east-1
-#   API_IMAGE_REPO: domain-manager-api
-#   UI_IMAGE_REPO: domain-manager-ui
+env:
+  AWS_ACCESS_KEY_ID: ${{ secrets.COOL_AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.COOL_AWS_SECRET_ACCESS_KEY }}
+  PRODUCTION_ACCOUNT_ID: ${{ secrets.COOL_AWS_PRODUCTION_ACCOUNT_ID }}
+  STAGING_ACCOUNT_ID: ${{ secrets.COOL_AWS_STAGING_ACCOUNT_ID }}
+  SHARED_SERVICES_PRODUCTION_ACCOUNT_ID: ${{ secrets.COOL_SHARED_SERVICES_PRODUCTION_ACCOUNT_ID }}
+  SHARED_SERVICES_STAGING_ACCOUNT_ID: ${{ secrets.COOL_SHARED_SERVICES_STAGING_ACCOUNT_ID }}
+  REGION: us-east-1
+  AWS_REGION: us-east-1
+  AWS_DEFAULT_REGION: us-east-1
+  API_IMAGE_REPO: domain-manager-api
+  UI_IMAGE_REPO: domain-manager-ui
 
+  IS_STAGING: ${{ github.event_name == 'push' || github.event.action == 'cool_staging' || github.event.action == 'deploy' }}
+  IS_PRODUCTION: ${{ github.event.action == 'cool_production' }}
+  IS_PULL_REQUEST: ${{ github.event_name == 'pull_request' }}
+  BUILD_UI: github.event.client_payload.trigger == env.UI_IMAGE_REPO || github.event.action == 'cool_production'
+  BUILD_API: github.event.client_payload.trigger == env.API_IMAGE_REPO || github.event.action == 'cool_production'
 
-# jobs:
-#   deploy:
-#     runs-on: ubuntu-latest
-#     steps:
-#       # Install Terraform
-#       - uses: hashicorp/setup-terraform@v1
-#         with:
-#           terraform_version: 0.12.30
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # Install Terraform
+      - uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 0.12.30
 
-#       # Verify Terraform version
-#       - name: Verify Terraform version
-#         run: terraform --version
+      # Verify Terraform version
+      - name: Verify Terraform version
+        run: terraform --version
 
-#       # Checkout cicd repo
-#       - uses: actions/checkout@v2
-#         with:
-#           path: cicd
+      # Checkout cicd repo
+      - uses: actions/checkout@v2
+        with:
+          path: cicd
 
-#       # Checkout UI repo
-#       - uses: actions/checkout@v2
-#         with:
-#           path: ui
-#           repository: cisagov/domain-manager-ui
+      # Checkout UI repo
+      - uses: actions/checkout@v2
+        with:
+          path: ui
+          repository: cisagov/domain-manager-ui
 
-#       # Checkout API repo
-#       - uses: actions/checkout@v2
-#         with:
-#           path: api
-#           repository: cisagov/domain-manager-api
+      # Checkout API repo
+      - uses: actions/checkout@v2
+        with:
+          path: api
+          repository: cisagov/domain-manager-api
 
-#       # Output metadata
-#       - name: Echo Metadata
-#         run: |
-#           echo ${{ github.event_name }}
-#           echo ${{ github.event.action }}
+      # Output metadata
+      - name: Echo Metadata
+        run: |
+          echo ${{ github.event_name }}
+          echo ${{ github.event.action }}
 
-#       # Set production environment
-#       - name: Set production environment
-#         run: |
-#           echo "ACCOUNT_ID=$PRODUCTION_ACCOUNT_ID" >> $GITHUB_ENV
-#           echo "ENVIRONMENT=staging" >> $GITHUB_ENV
-#           echo "SHARED_SERVICES_ACCOUNT_ID=$SHARED_SERVICES_STAGING_ACCOUNT_ID" >> $GITHUB_ENV
-#         if: github.event.action == 'cool_production'
+      # Set production environment
+      - name: Set production environment
+        run: |
+          echo "ACCOUNT_ID=$PRODUCTION_ACCOUNT_ID" >> $GITHUB_ENV
+          echo "ENVIRONMENT=staging" >> $GITHUB_ENV
+          echo "SHARED_SERVICES_ACCOUNT_ID=$SHARED_SERVICES_STAGING_ACCOUNT_ID" >> $GITHUB_ENV
+        if: env.IS_PRODUCTION == 'true'
 
-#       # Set staging environment
-#       - name: Set staging environment
-#         run: |
-#           echo "ACCOUNT_ID=$STAGING_ACCOUNT_ID" >> $GITHUB_ENV
-#           echo "ENVIRONMENT=staging" >> $GITHUB_ENV
-#           echo "SHARED_SERVICES_ACCOUNT_ID=$SHARED_SERVICES_STAGING_ACCOUNT_ID" >> $GITHUB_ENV
-#         if: github.event_name == 'push' || github.event.action == 'cool_staging' || github.event.action == 'deploy'
+      # Set staging environment
+      - name: Set staging environment
+        run: |
+          echo "ACCOUNT_ID=$STAGING_ACCOUNT_ID" >> $GITHUB_ENV
+          echo "ENVIRONMENT=staging" >> $GITHUB_ENV
+          echo "SHARED_SERVICES_ACCOUNT_ID=$SHARED_SERVICES_STAGING_ACCOUNT_ID" >> $GITHUB_ENV
+        if: env.IS_STAGING == 'true' || env.IS_PULL_REQUEST == 'true'
 
-#       # Set environment
-#       - name: Set environment
-#         run: |
-#           echo "ASSUME_ROLE=arn:aws:iam::$ACCOUNT_ID:role/ProvisionAccount" >> $GITHUB_ENV
-#           echo "ECR_URI=$ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com" >> $GITHUB_ENV
+      # Set environment
+      - name: Set environment
+        run: |
+          echo "ASSUME_ROLE=arn:aws:iam::$ACCOUNT_ID:role/ProvisionAccount" >> $GITHUB_ENV
+          echo "ECR_URI=$ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com" >> $GITHUB_ENV
 
-#       # Get UI tag
-#       - name: Get UI Tag
-#         id: ui_tag
-#         run: echo "UI_TAG=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
-#         working-directory: ./ui/
+      # Get UI tag
+      - name: Get UI Tag
+        id: ui_tag
+        run: echo "UI_TAG=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+        working-directory: ./ui/
 
-#       # Build UI
-#       - name: Build UI
-#         run: docker build -t $UI_IMAGE_REPO:${{steps.vars.outputs.tag}} .
-#         if: github.event.client_payload.trigger == env.UI_IMAGE_REPO || github.event.action == 'cool_production'
-#         working-directory: ./ui/
+      # Build UI
+      - name: Build UI
+        run: docker build -t $UI_IMAGE_REPO:${{steps.vars.outputs.tag}} .
+        if: env.BUILD_UI == 'true'
+        working-directory: ./ui/
 
-#       # Tag UI
-#       - name: Tag UI
-#         run: docker tag $UI_IMAGE_REPO:${{steps.vars.outputs.tag}} $ECR_URI/$UI_IMAGE_REPO:${{UI_TAG}}
-#         if: github.event.client_payload.trigger == env.UI_IMAGE_REPO || github.event.action == 'cool_production'
-#         working-directory: ./ui/
+      # Tag UI
+      - name: Tag UI
+        run: docker tag $UI_IMAGE_REPO:${{steps.vars.outputs.tag}} $ECR_URI/$UI_IMAGE_REPO:${{UI_TAG}}
+        if: env.BUILD_UI == 'true'
+        working-directory: ./ui/
 
-#       # Get API tag
-#       - name: Get API Tag
-#         run: echo "API_TAG=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
-#         working-directory: ./api/
+      # Get API tag
+      - name: Get API Tag
+        run: echo "API_TAG=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+        working-directory: ./api/
 
-#       # Build API
-#       - name: Build API
-#         run: docker build -t $API_IMAGE_REPO:${{steps.vars.outputs.tag}} .
-#         if: github.event.client_payload.trigger == env.API_IMAGE_REPO || github.event.action == 'cool_production'
-#         working-directory: ./api/
+      # Build API
+      - name: Build API
+        run: docker build -t $API_IMAGE_REPO:${{steps.vars.outputs.tag}} .
+        if: env.BUILD_API == 'true'
+        working-directory: ./api/
 
-#       # Tag API
-#       - name: Tag API
-#         run: docker tag $IMAGE_REPO:${{steps.vars.outputs.tag}} $ECR_URI/$IMAGE_REPO:${{steps.vars.outputs.tag}}
-#         if: github.event.client_payload.trigger == env.IMAGE_REPO || github.event.action == 'cool_production'
-#         working-directory: ./api/
+      # Tag API
+      - name: Tag API
+        run: docker tag $IMAGE_REPO:${{steps.vars.outputs.tag}} $ECR_URI/$IMAGE_REPO:${{steps.vars.outputs.tag}}
+        if: env.BUILD_API == 'true'
+        working-directory: ./api/
 
-#       # Assume provision account role
-#       - name: Assume Provision Account Role
-#         run: |
-#           JSON=$(aws sts assume-role --role-arn $ASSUME_ROLE --role-session-name $IMAGE_REPO-github-actions --duration 900)
-#           echo AWS_ACCESS_KEY_ID=$(echo ${JSON} | jq --raw-output ".Credentials[\"AccessKeyId\"]") >> $GITHUB_ENV
-#           echo AWS_SECRET_ACCESS_KEY=$(echo ${JSON} | jq --raw-output ".Credentials[\"SecretAccessKey\"]") >> $GITHUB_ENV
-#           echo AWS_SESSION_TOKEN=$(echo ${JSON} | jq --raw-output ".Credentials[\"SessionToken\"]") >> $GITHUB_ENV
-#           echo AWS_EXPIRATION=$(echo ${JSON} | jq --raw-output ".Credentials[\"Expiration\"]") >> $GITHUB_ENV
+      # Assume provision account role
+      - name: Assume Provision Account Role
+        run: |
+          JSON=$(aws sts assume-role --role-arn $ASSUME_ROLE --role-session-name $IMAGE_REPO-github-actions --duration 900)
+          echo AWS_ACCESS_KEY_ID=$(echo ${JSON} | jq --raw-output ".Credentials[\"AccessKeyId\"]") >> $GITHUB_ENV
+          echo AWS_SECRET_ACCESS_KEY=$(echo ${JSON} | jq --raw-output ".Credentials[\"SecretAccessKey\"]") >> $GITHUB_ENV
+          echo AWS_SESSION_TOKEN=$(echo ${JSON} | jq --raw-output ".Credentials[\"SessionToken\"]") >> $GITHUB_ENV
+          echo AWS_EXPIRATION=$(echo ${JSON} | jq --raw-output ".Credentials[\"Expiration\"]") >> $GITHUB_ENV
 
-#       # Confirm assumed role
-#       - name: Confirm Assumed Role
-#         run: aws sts get-caller-identity
+      # Confirm assumed role
+      - name: Confirm Assumed Role
+        run: aws sts get-caller-identity
 
-#       # Login to ECR
-#       - name: ECR Login
-#         run: aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $ECR_URI
+      # Login to ECR
+      - name: ECR Login
+        run: aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $ECR_URI
 
-#       # Push UI
-#       - name: Push UI
-#         run: docker push $ECR_URI/$UI_IMAGE_REPO:$UI_TAG
-#         if: github.event.client_payload.trigger == env.UI_IMAGE_REPO || github.event.action == 'cool_production'
+      # Push UI
+      - name: Push UI
+        run: docker push $ECR_URI/$UI_IMAGE_REPO:$UI_TAG
+        if: env.BUILD_UI == 'true'
 
-#       # Push API
-#       - name: Push API
-#         run: docker push $ECR_URI/$API_IMAGE_REPO:$API_TAG
-#         if: github.event.client_payload.trigger == env.API_IMAGE_REPO || github.event.action == 'cool_production'
+      # Push API
+      - name: Push API
+        run: docker push $ECR_URI/$API_IMAGE_REPO:$API_TAG
+        if: env.BUILD_API == 'true'
 
-#       # Initialize Terraform
-#       - name: Terraform init
-#         working-directory: ./cicd/cool
-#         run: terraform init -input=false
+      # Initialize Terraform
+      - name: Terraform init
+        working-directory: ./cicd/cool
+        run: terraform init -input=false
       
-#       # Select terraform workspace
-#       - name: Terraform Workspace
-#         working-directory: ./cicd/cool
-#         run: |
-#           terraform workspace select $ENVIRONMENT
-#           terraform workspace show
+      # Select terraform workspace
+      - name: Terraform Workspace
+        working-directory: ./cicd/cool
+        run: |
+          terraform workspace select $ENVIRONMENT
+          terraform workspace show
 
-#       # Validate Terraform
-#       - name: Terraform validation
-#         working-directory: ./cicd/cool
-#         run: terraform validate
+      # Validate Terraform
+      - name: Terraform validation
+        working-directory: ./cicd/cool
+        run: terraform validate
 
-#       # Sometimes this just needs run again...
-#       - name: Terraform init 2
-#         working-directory: ./cicd/cool
-#         run: terraform init -input=false
+      # Sometimes this just needs run again...
+      - name: Terraform init 2
+        working-directory: ./cicd/cool
+        run: terraform init -input=false
 
-#       # Plan terraform
-#       - name: Terraform Plan
-#         working-directory: ./cicd/cool
-#         run: |
-#           terraform plan \
-#             -input=false \
-#             -var-file ./vars/$ENVIRONMENT.tfvars \
-#             -var="api_image_tag=$API_TAG" \
-#             -var="ui_image_tag=$UI_TAG" \
-#             -var="account_id=$ACCOUNT_ID" \
-#             -var="shared_services_account_id=$SHARED_SERVICES_ACCOUNT_ID"
+      # Plan terraform
+      - name: Terraform Plan
+        working-directory: ./cicd/cool
+        run: |
+          terraform plan \
+            -input=false \
+            -var-file ./vars/$ENVIRONMENT.tfvars \
+            -var="api_image_tag=$API_TAG" \
+            -var="ui_image_tag=$UI_TAG" \
+            -var="account_id=$ACCOUNT_ID" \
+            -var="shared_services_account_id=$SHARED_SERVICES_ACCOUNT_ID"
 
-#       # Apply terraform
-#       # - name: Terraform Apply
-#       #   working-directory: ./cicd/cool
-#       #   run: |
-#       #     terraform apply \
-#       #       -input=false \
-#       #       -auto-approve \
-#       #       -var-file ./vars/$ENVIRONMENT.tfvars \
-#       #       -var="api_image_tag=$API_TAG" \
-#       #       -var="ui_image_tag=$UI_TAG" \
-#       #       -var="account_id=$ACCOUNT_ID" \
-#       #       -var="shared_services_account_id=$SHARED_SERVICES_ACCOUNT_ID"
+      # Test terraform
+      - name: Test
+        run: echo "Applying terraform"
+        if: env.IS_PULL_REQUEST == 'false'
+      # Apply terraform
+      # - name: Terraform Apply
+      #   working-directory: ./cicd/cool
+      #   run: |
+      #     terraform apply \
+      #       -input=false \
+      #       -auto-approve \
+      #       -var-file ./vars/$ENVIRONMENT.tfvars \
+      #       -var="api_image_tag=$API_TAG" \
+      #       -var="ui_image_tag=$UI_TAG" \
+      #       -var="account_id=$ACCOUNT_ID" \
+      #       -var="shared_services_account_id=$SHARED_SERVICES_ACCOUNT_ID"
