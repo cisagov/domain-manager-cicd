@@ -92,13 +92,13 @@ jobs:
 
       # Build UI
       - name: Build UI
-        run: docker build -t $UI_IMAGE_REPO:${{steps.vars.outputs.tag}} .
+        run: docker build -t $UI_IMAGE_REPO:$UI_TAG .
         if: env.BUILD_UI == 'true'
         working-directory: ./ui/
 
       # Tag UI
       - name: Tag UI
-        run: docker tag $UI_IMAGE_REPO:${{steps.vars.outputs.tag}} $ECR_URI/$UI_IMAGE_REPO:${{UI_TAG}}
+        run: docker tag $UI_IMAGE_REPO:$UI_TAG $ECR_URI/$UI_IMAGE_REPO:$UI_TAG
         if: env.BUILD_UI == 'true'
         working-directory: ./ui/
 
@@ -109,13 +109,13 @@ jobs:
 
       # Build API
       - name: Build API
-        run: docker build -t $API_IMAGE_REPO:${{steps.vars.outputs.tag}} .
+        run: docker build -t $API_IMAGE_REPO:$API_TAG .
         if: env.BUILD_API == 'true'
         working-directory: ./api/
 
       # Tag API
       - name: Tag API
-        run: docker tag $IMAGE_REPO:${{steps.vars.outputs.tag}} $ECR_URI/$IMAGE_REPO:${{steps.vars.outputs.tag}}
+        run: docker tag $IMAGE_REPO:$API_TAG $ECR_URI/$IMAGE_REPO:$API_TAG
         if: env.BUILD_API == 'true'
         working-directory: ./api/
 
