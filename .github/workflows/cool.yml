@@ -132,7 +132,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-region: us-east-1
-          role-to-assume: $ASSUME_ROLE
+          role-to-assume: ${{ env.ASSUME_ROLE }}
 
       # Confirm assumed role
       - name: Confirm Assumed Role
