@@ -42,8 +42,8 @@ jobs:
         if: github.event_name == 'push' || github.event.action == 'cool_staging' || github.event.action == 'deploy'
       - name: Set Environment
         run: |
-          echo ::set-output name=ACCOUNT_ID::$ACCOUNT_ID
-          echo ::set-output name=ENVIRONMENT::$ENVIRONMENT
+          echo ::set-output name=ACCOUNT_ID::$(echo "$ACCOUNT_ID")
+          echo ::set-output name=ENVIRONMENT::$(echo "$ENVIRONMENT")
           echo ::set-output name=ASSUME_ROLE::$(echo "arn:aws:iam::$ACCOUNT_ID:role/ProvisionAccount")
           echo ::set-output name=ECR_URI::$(echo "$ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com")
         id: env

@@ -32,8 +32,8 @@ jobs:
           echo "ACCOUNT_ID=$STAGING_ACCOUNT_ID" >> $GITHUB_ENV
       - name: Set Environment
         run: |
-          echo ::set-output name=ACCOUNT_ID::$ACCOUNT_ID
-          echo ::set-output name=ENVIRONMENT::$ENVIRONMENT
+          echo ::set-output name=ACCOUNT_ID::$(echo "$ACCOUNT_ID")
+          echo ::set-output name=ENVIRONMENT::$(echo "$ENVIRONMENT")
           echo ::set-output name=ASSUME_ROLE::$(echo "arn:aws:iam::$ACCOUNT_ID:role/ProvisionAccount")
           echo ::set-output name=ECR_URI::$(echo "$ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com")
         id: env
@@ -78,6 +78,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [tag_ui, tag_api, setenv]
     env:
+      ACCOUNT_ID: ${{ needs.setenv.outputs.ACCOUNT_ID }}
       ENVIRONMENT: ${{ needs.setenv.outputs.ENVIRONMENT }}
     steps:
 
@@ -124,4 +125,4 @@ jobs:
             -var-file ./vars/$ENVIRONMENT.tfvars \
             -var="api_image_tag=${{needs.tag_api.outputs.tag}}" \
             -var="ui_image_tag=${{needs.tag_ui.outputs.tag}}" \
-            -var="account_id=${{needs.setenv.outputs.ACCOUNT_ID}}"
+            -var="account_id=$ACCOUNT_ID"
