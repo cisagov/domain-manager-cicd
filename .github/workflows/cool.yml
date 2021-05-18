@@ -133,6 +133,7 @@ jobs:
         with:
           aws-region: us-east-1
           role-to-assume: ${{ env.ASSUME_ROLE }}
+          role-skip-session-tagging: true
 
       # Confirm assumed role
       - name: Confirm Assumed Role
