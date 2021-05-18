@@ -17,11 +17,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Is PR"
-        run: echo "This is a PR"
+        run: echo "$IS_PR"
         if: ${{ env.IS_PR }}
       - name: "Is STAGING"
-        run: echo "This is staging"
+        run: echo "$IS_STAGING"
         if: ${{ env.IS_STAGING }}
       - name: "Is PRODUCTION"
-        run: echo "This is prod"
+        run: echo "$IS_PRODUCTION"
         if: ${{ env.IS_PRODUCTION }}
