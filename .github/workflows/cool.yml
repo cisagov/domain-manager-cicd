@@ -198,19 +198,16 @@ jobs:
             -var="account_id=$ACCOUNT_ID" \
             -var="shared_services_account_id=$SHARED_SERVICES_ACCOUNT_ID"
 
-      # Test terraform
-      - name: Test
-        run: echo "Applying terraform"
-        if: env.IS_PULL_REQUEST == 'false'
       # Apply terraform
-      # - name: Terraform Apply
-      #   working-directory: ./cicd/cool
-      #   run: |
-      #     terraform apply \
-      #       -input=false \
-      #       -auto-approve \
-      #       -var-file ./vars/$ENVIRONMENT.tfvars \
-      #       -var="api_image_tag=$API_TAG" \
-      #       -var="ui_image_tag=$UI_TAG" \
-      #       -var="account_id=$ACCOUNT_ID" \
-      #       -var="shared_services_account_id=$SHARED_SERVICES_ACCOUNT_ID"
+      - name: Terraform Apply
+        working-directory: ./cicd/cool
+        run: |
+          terraform apply \
+            -input=false \
+            -auto-approve \
+            -var-file ./vars/$ENVIRONMENT.tfvars \
+            -var="api_image_tag=$API_TAG" \
+            -var="ui_image_tag=$UI_TAG" \
+            -var="account_id=$ACCOUNT_ID" \
+            -var="shared_services_account_id=$SHARED_SERVICES_ACCOUNT_ID"
+        if: env.IS_PULL_REQUEST == 'false'
