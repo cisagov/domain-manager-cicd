@@ -13,92 +13,75 @@ env:
   AWS_DEFAULT_REGION: us-east-1
 
 jobs:
-  setenv:
-    runs-on: ubuntu-latest
-    outputs:
-      ACCOUNT_ID: ${{ steps.env.outputs.ACCOUNT_ID }}
-      ENVIRONMENT: ${{ steps.env.outputs.ENVIRONMENT }}
-      SHARED_SERVICES_ACCOUNT_ID: ${{ steps.env.outputs.SHARED_SERVICES_ACCOUNT_ID }}
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set Environment
-        run: |
-          echo ::set-output name=ACCOUNT_ID::$STAGING_ACCOUNT_ID
-          echo ::set-output name=ENVIRONMENT::staging
-          echo ::set-output name=SHARED_SERVICES_ACCOUNT_ID::$SHARED_SERVICES_STAGING_ACCOUNT_ID
-        id: env
-
-  tag_ui:
-    runs-on: ubuntu-latest
-    needs: [setenv]
-    env:
-      ENVIRONMENT: ${{ needs.setenv.outputs.ENVIRONMENT }}
-    outputs:
-      tag: ${{ steps.vars.outputs.tag}}
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          repository: cisagov/domain-manager-ui
-      - name: Get Tag
-        id: vars
-        run: echo ::set-output name=tag::$(git rev-parse --short HEAD)
-
-  tag_api:
-    runs-on: ubuntu-latest
-    needs: [setenv]
-    env:
-      ENVIRONMENT: ${{ needs.setenv.outputs.ENVIRONMENT }}
-    outputs:
-      tag: ${{ steps.vars.outputs.tag}}
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          repository: cisagov/domain-manager-api
-      - name: Get Tag
-        id: vars
-        run: echo ::set-output name=tag::$(git rev-parse --short HEAD)
-
   terraform:
     runs-on: ubuntu-latest
-    needs: [tag_ui, tag_api, setenv]
-    env:
-      ACCOUNT_ID: ${{ needs.setenv.outputs.ACCOUNT_ID }}
-      ENVIRONMENT: ${{ needs.setenv.outputs.ENVIRONMENT }}
-      SHARED_SERVICES_ACCOUNT_ID: ${{ needs.setenv.outputs.SHARED_SERVICES_ACCOUNT_ID }}
     steps:
-
-      # Checkout domain-manager repo for running terraform
-      - uses: actions/checkout@v2
-        with:
-          path: domain-manager
-
       # Install Terraform
       - uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: 0.12.30
+
+      # Verify Terraform version
       - name: Verify Terraform version
         run: terraform --version
 
+      # Checkout cicd repo
+      - uses: actions/checkout@v2
+        with:
+          path: cicd
+
+      # Checkout UI repo
+      - uses: actions/checkout@v2
+        with:
+          path: ui
+          repository: cisagov/domain-manager-ui
+
+      # Checkout API repo
+      - uses: actions/checkout@v2
+        with:
+          path: api
+          repository: cisagov/domain-manager-api
+
+      # Set environment variables
+      - name: Set Environment
+        run: |
+          echo "ACCOUNT_ID=$STAGING_ACCOUNT_ID" >> $GITHUB_ENV
+          echo "ENVIRONMENT=staging" >> $GITHUB_ENV
+          echo "SHARED_SERVICES_ACCOUNT_ID=$SHARED_SERVICES_STAGING_ACCOUNT_ID" >> $GITHUB_ENV
+        id: env
+
+      # Get UI tag
+      - name: Get UI Tag
+        id: ui_tag
+        run: echo "UI_TAG=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+        working-directory: ./ui/
+
+      # Get API tag
+      - name: Get API Tag
+        id: api_tag
+        run: echo "API_TAG=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+        working-directory: ./api/
+
       # Initialize Terraform
       - name: Terraform init
-        working-directory: ./domain-manager/cool
+        working-directory: ./cicd/cool
         run: terraform init -input=false
-
+      
       # Select terraform workspace
       - name: Terraform Workspace
-        working-directory: ./domain-manager/cool
+        working-directory: ./cicd/cool
         run: |
           terraform workspace select $ENVIRONMENT
           terraform workspace show
 
       # Validate Terraform
       - name: Terraform validation
-        working-directory: ./domain-manager/cool
+        working-directory: ./cicd/cool
         run: terraform validate
 
       # Sometimes this just needs run again...
       - name: Terraform init 2
-        working-directory: ./domain-manager/cool
+        working-directory: ./cicd/cool
         run: terraform init -input=false
 
       # Apply terraform
@@ -108,7 +91,7 @@ jobs:
           terraform plan \
             -input=false \
             -var-file ./vars/$ENVIRONMENT.tfvars \
-            -var="api_image_tag=${{needs.tag_api.outputs.tag}}" \
-            -var="ui_image_tag=${{needs.tag_ui.outputs.tag}}" \
+            -var="api_image_tag=$API_TAG" \
+            -var="ui_image_tag=$UI_TAG" \
             -var="account_id=$ACCOUNT_ID" \
             -var="shared_services_account_id=$SHARED_SERVICES_ACCOUNT_ID"
