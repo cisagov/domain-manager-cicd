@@ -1,0 +1,27 @@
+name: COOL Deploy
+on:
+  pull_request:
+    branches: [develop]
+  push:
+    branches: [develop]
+  repository_dispatch:
+    types: [deploy, cool_staging, cool_production]
+
+env:
+  IS_STAGING: ${{ github.event_name == 'push' || github.event.action == 'cool_staging' || github.event.action == 'deploy' }}
+  IS_PRODUCTION: ${{ github.event.action == 'cool_production' }}
+  IS_PR: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Is PR"
+        run: echo "This is a PR"
+        if: ${{ IS_PR }}
+      - name: "Is STAGING"
+        run: echo "This is staging"
+        if: ${{ IS_STAGING }}
+      - name: "Is PRODUCTION"
+        run: echo "This is prod"
+        if: ${{ IS_PRODUCTION }}
