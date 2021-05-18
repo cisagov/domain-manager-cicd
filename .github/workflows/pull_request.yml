@@ -86,7 +86,7 @@ jobs:
 
       # Apply terraform
       - name: Terraform Plan
-        working-directory: ./domain-manager/cool
+        working-directory: ./cicd/cool
         run: |
           terraform plan \
             -input=false \
