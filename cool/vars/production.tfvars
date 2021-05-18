@@ -1,9 +1,7 @@
 #=================================================
 #  PROVIDER
 #=================================================
-shared_services_role = "arn:aws:iam::121087745329:role/ProvisionPrivateDNSRecords"
 workspace_type = "production"
-account_id = "779871898657"
 
 #=================================================
 #  CORE

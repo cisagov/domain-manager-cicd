@@ -7,6 +7,7 @@ env:
   AWS_ACCESS_KEY_ID: ${{ secrets.COOL_AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.COOL_AWS_SECRET_ACCESS_KEY }}
   STAGING_ACCOUNT_ID: ${{ secrets.COOL_AWS_STAGING_ACCOUNT_ID }}
+  SHARED_SERVICES_STAGING_ACCOUNT_ID: ${{ secrets.COOL_SHARED_SERVICES_STAGING_ACCOUNT_ID }}
   REGION: us-east-1
   AWS_REGION: us-east-1
   AWS_DEFAULT_REGION: us-east-1
@@ -17,20 +18,14 @@ jobs:
     outputs:
       ACCOUNT_ID: ${{ steps.env.outputs.ACCOUNT_ID }}
       ENVIRONMENT: ${{ steps.env.outputs.ENVIRONMENT }}
+      SHARED_SERVICES_ACCOUNT_ID: ${{ steps.env.outputs.SHARED_SERVICES_ACCOUNT_ID }}
     steps:
       - uses: actions/checkout@v2
-      - name: Echo Metadata
-        run: |
-          echo ${{ github.event_name }}
-          echo ${{ github.event.action }}
-      - name: Set Staging
-        run: |
-          echo "ENVIRONMENT=staging" >> $GITHUB_ENV
-          echo "ACCOUNT_ID=$STAGING_ACCOUNT_ID" >> $GITHUB_ENV
       - name: Set Environment
         run: |
-          echo ::set-output name=ACCOUNT_ID::$(echo "$ACCOUNT_ID")
-          echo ::set-output name=ENVIRONMENT::$ENVIRONMENT
+          echo ::set-output name=ACCOUNT_ID::$STAGING_ACCOUNT_ID
+          echo ::set-output name=ENVIRONMENT::staging
+          echo ::set-output name=SHARED_SERVICES_ACCOUNT_ID::$SHARED_SERVICES_STAGING_ACCOUNT_ID
         id: env
 
   tag_ui:
@@ -69,6 +64,7 @@ jobs:
     env:
       ACCOUNT_ID: ${{ needs.setenv.outputs.ACCOUNT_ID }}
       ENVIRONMENT: ${{ needs.setenv.outputs.ENVIRONMENT }}
+      SHARED_SERVICES_ACCOUNT_ID: ${{ needs.setenv.outputs.SHARED_SERVICES_ACCOUNT_ID }}
     steps:
 
       # Checkout domain-manager repo for running terraform
@@ -114,4 +110,5 @@ jobs:
             -var-file ./vars/$ENVIRONMENT.tfvars \
             -var="api_image_tag=${{needs.tag_api.outputs.tag}}" \
             -var="ui_image_tag=${{needs.tag_ui.outputs.tag}}" \
-            -var="account_id=$STAGING_ACCOUNT_ID"
+            -var="account_id=$ACCOUNT_ID"
+            -var="shared_services_account_id=$SHARED_SERVICES_ACCOUNT_ID"

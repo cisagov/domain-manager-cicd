@@ -1,8 +1,9 @@
 #=================================================
 #  PROVIDER
 #=================================================
-variable "shared_services_role" {
+variable "shared_services_account_id" {
   type = string
+  description = "Account ID for DNS shared services role."
 }
 
 variable "workspace_type" {
