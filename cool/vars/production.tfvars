@@ -21,11 +21,6 @@ new_user_notification_email_address = "CISA.CSD.VM_Assessments_DomainManagement@
 internal_route53_record = "domain-manager.cool.cyber.dhs.gov"
 
 #=================================================
-#  DOCKER
-#=================================================
-image_url = "779871898657.dkr.ecr.us-east-1.amazonaws.com"
-
-#=================================================
 #  LOGS
 #=================================================
 log_retention_days = 7

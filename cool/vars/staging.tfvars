@@ -21,11 +21,6 @@ new_user_notification_email_address = "domainmanager-aaaacmecaofdaenpbzd4gkrxoq@
 internal_route53_record = "domain-manager.staging.cool.cyber.dhs.gov"
 
 #=================================================
-#  DOCKER
-#=================================================
-image_url = "719488448316.dkr.ecr.us-east-1.amazonaws.com"
-
-#=================================================
 #  LOGS
 #=================================================
 log_retention_days = 7
