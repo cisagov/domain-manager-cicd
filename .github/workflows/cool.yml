@@ -24,8 +24,8 @@ env:
   UI_IMAGE_REPO: domain-manager-ui
 
   # Booleans
-  BUILD_API: ${{ github.event.client_payload.trigger == env.API_IMAGE_REPO || github.event.action == 'cool_production' }}
-  BUILD_UI: ${{ github.event.client_payload.trigger == env.UI_IMAGE_REPO || github.event.action == 'cool_production' }}
+  BUILD_API: ${{ github.event.client_payload.trigger == $API_IMAGE_REPO || github.event.action == 'cool_production' }}
+  BUILD_UI: ${{ github.event.client_payload.trigger == $UI_IMAGE_REPO || github.event.action == 'cool_production' }}
   IS_STAGING: ${{ github.event_name == 'push' || github.event.action == 'cool_staging' || github.event.action == 'deploy' }}
   IS_PRODUCTION: ${{ github.event.action == 'cool_production' }}
   IS_PULL_REQUEST: ${{ github.event_name == 'pull_request' }}  
