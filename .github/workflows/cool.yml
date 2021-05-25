@@ -77,8 +77,8 @@ jobs:
       - name: Set production environment
         run: |
           echo "ACCOUNT_ID=$PRODUCTION_ACCOUNT_ID" >> $GITHUB_ENV
-          echo "ENVIRONMENT=staging" >> $GITHUB_ENV
-          echo "SHARED_SERVICES_ACCOUNT_ID=$SHARED_SERVICES_STAGING_ACCOUNT_ID" >> $GITHUB_ENV
+          echo "ENVIRONMENT=production" >> $GITHUB_ENV
+          echo "SHARED_SERVICES_ACCOUNT_ID=$SHARED_SERVICES_PRODUCTION_ACCOUNT_ID" >> $GITHUB_ENV
         if: env.IS_PRODUCTION == 'true'
 
       # Set staging environment
