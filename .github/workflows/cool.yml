@@ -126,7 +126,7 @@ jobs:
 
       # Tag API
       - name: Tag API
-        run: docker tag $IMAGE_REPO:$API_TAG $ECR_URI/$IMAGE_REPO:$API_TAG
+        run: docker tag $API_IMAGE_REPO:$API_TAG $ECR_URI/$API_IMAGE_REPO:$API_TAG
         if: env.BUILD_API == 'true'
         working-directory: ./api/
 
