@@ -1,10 +1,7 @@
 #=================================================
 #  PROVIDER
 #=================================================
-github_actions_role = "arn:aws:iam::779871898657:role/ProvisionAccount"
-shared_services_role = "arn:aws:iam::121087745329:role/ProvisionPrivateDNSRecords"
 workspace_type = "production"
-account_id = "779871898657"
 
 #=================================================
 #  CORE
@@ -22,11 +19,6 @@ new_user_notification_email_address = "CISA.CSD.VM_Assessments_DomainManagement@
 #  ROUTE 53
 #=================================================
 internal_route53_record = "domain-manager.cool.cyber.dhs.gov"
-
-#=================================================
-#  DOCKER
-#=================================================
-image_url = "779871898657.dkr.ecr.us-east-1.amazonaws.com"
 
 #=================================================
 #  LOGS

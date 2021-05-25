@@ -1,10 +1,7 @@
 #=================================================
 #  PROVIDER
 #=================================================
-github_actions_role = "arn:aws:iam::719488448316:role/ProvisionAccount"
-shared_services_role = "arn:aws:iam::767583904664:role/ProvisionPrivateDNSRecords"
 workspace_type = "staging"
-account_id = "719488448316"
 
 #=================================================
 #  CORE
@@ -22,11 +19,6 @@ new_user_notification_email_address = "domainmanager-aaaacmecaofdaenpbzd4gkrxoq@
 #  ROUTE 53
 #=================================================
 internal_route53_record = "domain-manager.staging.cool.cyber.dhs.gov"
-
-#=================================================
-#  DOCKER
-#=================================================
-image_url = "719488448316.dkr.ecr.us-east-1.amazonaws.com"
 
 #=================================================
 #  LOGS

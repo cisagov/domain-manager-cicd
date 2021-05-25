@@ -1,12 +1,9 @@
 #=================================================
 #  PROVIDER
 #=================================================
-variable "github_actions_role" {
+variable "shared_services_account_id" {
   type = string
-}
-
-variable "shared_services_role" {
-  type = string
+  description = "Account ID for DNS shared services role."
 }
 
 variable "workspace_type" {
@@ -53,13 +50,6 @@ variable "new_user_notification_email_address" {
 #  ROUTE 53
 #=================================================
 variable "internal_route53_record" {
-  type = string
-}
-
-#=================================================
-#  DOCKER
-#=================================================
-variable "image_url" {
   type = string
 }
 
