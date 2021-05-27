@@ -1,0 +1,21 @@
+name: COOL Deploy
+on:
+  pull_request:
+    branches: [develop]
+
+jobs:
+  test_staging:
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      # Output metadata
+      - name: Test
+        run: echo "production"
+
+  test_production:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      # Test
+        - name: Test
+          run: echo "staging"
