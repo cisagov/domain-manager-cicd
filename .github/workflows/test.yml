@@ -7,9 +7,17 @@ env:
   BUILD_ENV: staging
 
 jobs:
+  setenv:
+    runs-on: ubuntu-latest
+    outputs: 
+      ENVIRONMENT: ${{ steps.env.outputs.ENVIRONMENT }}
+    steps:
+      - name: Set Environment
+        run: echo ::set-output name=ENVIRONMENT::staging
   test_staging:
     runs-on: ubuntu-latest
-    environment: ${{ env.BUILD_ENV }}
+    environment: ${{ needs.setenv.outputs.ENVIRONMENT }}
+    needs: [setenv ]
     env:
       ACCOUNT_ID: ${{ secrets.ACCOUNT_ID }}
     steps:
