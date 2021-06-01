@@ -26,4 +26,4 @@ jobs:
       ACCOUNT_ID: ${{ secrets.ACCOUNT_ID }}
     steps:
       - name: Test
-        run: echo "$ACCOUNT_ID_test"
+        run: echo "$ACCOUNT_ID test"
