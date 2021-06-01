@@ -65,11 +65,11 @@ jobs:
 
       - name: Build
         run: docker build -t ${{ matrix.repo }}:$tag .
-        if: ${{ github.event.action != 'pull_request' }}
+        if: ${{ github.event_name != 'pull_request' }}
 
       - name: Tag
         run: docker tag ${{ matrix.repo }}:$TAG $ecr_uri/${{ matrix.repo }}:$tag
-        if: ${{ github.event.action != 'pull_request' }}
+        if: ${{ github.event_name != 'pull_request' }}
 
       - name: Assume provision account role
         uses: aws-actions/configure-aws-credentials@v1
@@ -87,7 +87,7 @@ jobs:
 
       - name: Push to ECR
         run: docker push $ecr_uri/${{ matrix.repo }}:$tag
-        if: ${{ github.event.action != 'pull_request' }}
+        if: ${{ github.event_name != 'pull_request' }}
 
   # Run terraform
   deploy:
