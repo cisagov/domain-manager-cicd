@@ -74,9 +74,9 @@ jobs:
       - name: Assume provision account role
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-region: $REGION
+          aws-region: ${{ env.REGION }}
           role-duration-seconds: 1200
-          role-to-assume: $assume_role
+          role-to-assume: ${{ env.assume_role }}
           role-skip-session-tagging: true
 
       - name: Confirm Assumed Role
