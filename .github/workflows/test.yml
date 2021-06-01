@@ -13,7 +13,9 @@ jobs:
       ENVIRONMENT: ${{ steps.env.outputs.ENVIRONMENT }}
     steps:
       - name: Set Environment
-        run: echo ::set-output name=ENVIRONMENT::staging
+        run: |
+          echo "staging"
+          echo ::set-output name=ENVIRONMENT::$(echo "staging")
   test_staging:
     runs-on: ubuntu-latest
     environment: ${{ needs.setenv.outputs.ENVIRONMENT }}
