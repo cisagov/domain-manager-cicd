@@ -15,18 +15,21 @@ jobs:
   setenv:
     runs-on: ubuntu-latest
     outputs:
-      environment: ${{ steps.setoutputs.outputs.environment }}
+      environment: ${{ steps.env.outputs.environment }}
     steps:
       - name: Set staging environment
         run: echo "environment=staging" >> $GITHUB_ENV
-        if: env.IS_STAGING == 'true' || env.IS_PULL_REQUEST == 'true'
+        if: ${{ github.event.action != 'cool_production' }}
 
       - name: Set production environment
         run: echo "environment=production" >> $GITHUB_ENV
-        if: env.IS_PRODUCTION == 'true'
+        if: ${{ github.event.action == 'cool_production' }}
+
+      - name: Show environment
+        run: echo "$environment"
 
       - name: Set outputs
-        id: setoutputs
+        id: env
         run: echo ::set-output name=environment::$environment
 
   # Build and push image repositories
