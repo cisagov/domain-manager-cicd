@@ -44,6 +44,7 @@ data "aws_iam_policy_document" "ecs_task" {
       "cloudfront:CreateDistribution",
       "cloudfront:CreateDistributionWithTags",
       "cloudfront:ListDistributions",
+      "cloudfront:ListStreamingDistributions",
       "cloudfront:ListTagsForResource",
       "cloudfront:TagResource",
     ]
