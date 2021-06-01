@@ -3,19 +3,16 @@ on:
   pull_request:
     branches: [develop]
 
+env:
+  BUILD_ENV: staging
+
 jobs:
   test_staging:
     runs-on: ubuntu-latest
-    environment: staging
+    environment: ${{ env.BUILD_ENV }}
+    env:
+      ACCOUNT_ID: ${{ secrets.ACCOUNT_ID }}
     steps:
       # Output metadata
       - name: Test
-        run: echo "production test5"
-
-  test_production:
-    runs-on: ubuntu-latest
-    environment: production
-    steps:
-      # Test
-        - name: Test
-          run: echo "staging"
+        run: echo "$ACCOUNT_ID_test"
