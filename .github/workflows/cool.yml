@@ -96,7 +96,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [setenv, build]
     steps:
-      - run: echo "${{ needs.build.outputs }}"
+      - run: echo "${{ fromJson(needs.build.outputs) }}"
 
 
   # deploy:
