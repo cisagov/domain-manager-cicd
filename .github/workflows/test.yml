@@ -18,8 +18,9 @@ jobs:
           echo ::set-output name=ENVIRONMENT::$(echo "staging")
   test_staging:
     runs-on: ubuntu-latest
-    environment: ${{ needs.setenv.outputs.ENVIRONMENT }}
-    needs: [setenv ]
+    needs: [ setenv ]
+    environment: 
+      name: ${{ needs.setenv.outputs.ENVIRONMENT }}
     env:
       ACCOUNT_ID: ${{ secrets.ACCOUNT_ID }}
     steps:
