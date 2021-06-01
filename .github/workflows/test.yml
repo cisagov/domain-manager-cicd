@@ -13,6 +13,7 @@ jobs:
       ENVIRONMENT: ${{ steps.env.outputs.ENVIRONMENT }}
     steps:
       - name: Set Environment
+        id: env
         run: |
           echo "staging"
           echo ::set-output name=ENVIRONMENT::$(echo "staging")
@@ -24,6 +25,5 @@ jobs:
     env:
       ACCOUNT_ID: ${{ secrets.ACCOUNT_ID }}
     steps:
-      # Output metadata
       - name: Test
         run: echo "$ACCOUNT_ID_test"
