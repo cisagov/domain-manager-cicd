@@ -31,183 +31,187 @@ env:
   IS_PULL_REQUEST: ${{ github.event_name == 'pull_request' }}  
 
 jobs:
-  deploy:
+  # Set Environment
+  setenv:
     runs-on: ubuntu-latest
+    outputs:
+      environment: ${{ steps.setoutputs.outputs.environment }}
     steps:
-      # Install Terraform
-      - uses: hashicorp/setup-terraform@v1
-        with:
-          terraform_version: 0.12.31
-
-      # Verify Terraform version
-      - name: Verify Terraform version
-        run: terraform --version
-
-      # Checkout cicd repo
-      - uses: actions/checkout@v2
-        with:
-          path: cicd
-
-      # Checkout UI repo
-      - uses: actions/checkout@v2
-        with:
-          path: ui
-          repository: cisagov/domain-manager-ui
-
-      # Checkout API repo
-      - uses: actions/checkout@v2
-        with:
-          path: api
-          repository: cisagov/domain-manager-api
-
-      # Set default AWS credentials
-      - uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.COOL_AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.COOL_AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ env.REGION }}
-
-      # Output metadata
-      - name: Echo Metadata
-        run: |
-          echo ${{ github.event_name }}
-          echo ${{ github.event.action }}
-
-      # Set production environment
-      - name: Set production environment
-        run: |
-          echo "ACCOUNT_ID=$PRODUCTION_ACCOUNT_ID" >> $GITHUB_ENV
-          echo "ENVIRONMENT=production" >> $GITHUB_ENV
-          echo "SHARED_SERVICES_ACCOUNT_ID=$SHARED_SERVICES_PRODUCTION_ACCOUNT_ID" >> $GITHUB_ENV
-        if: env.IS_PRODUCTION == 'true'
-
-      # Set staging environment
       - name: Set staging environment
-        run: |
-          echo "ACCOUNT_ID=$STAGING_ACCOUNT_ID" >> $GITHUB_ENV
-          echo "ENVIRONMENT=staging" >> $GITHUB_ENV
-          echo "SHARED_SERVICES_ACCOUNT_ID=$SHARED_SERVICES_STAGING_ACCOUNT_ID" >> $GITHUB_ENV
+        run: echo "environment=staging" >> $GITHUB_ENV
         if: env.IS_STAGING == 'true' || env.IS_PULL_REQUEST == 'true'
 
-      # Set environment
-      - name: Set environment
-        run: |
-          echo "ASSUME_ROLE=arn:aws:iam::$ACCOUNT_ID:role/ProvisionAccount" >> $GITHUB_ENV
-          echo "ECR_URI=$ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com" >> $GITHUB_ENV
+      - name: Set production environment
+        run: echo "environment=production" >> $GITHUB_ENV
+        if: env.IS_PRODUCTION == 'true'
 
-      # Get UI tag
-      - name: Get UI Tag
-        id: ui_tag
-        run: echo "UI_TAG=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
-        working-directory: ./ui/
+      - name: Set outputs
+        id: setoutputs
+        run: echo ::set-output name=environment::$environment
 
-      # Build UI
-      - name: Build UI
-        run: docker build -t $UI_IMAGE_REPO:$UI_TAG .
-        if: env.BUILD_UI == 'true'
-        working-directory: ./ui/
-
-      # Tag UI
-      - name: Tag UI
-        run: docker tag $UI_IMAGE_REPO:$UI_TAG $ECR_URI/$UI_IMAGE_REPO:$UI_TAG
-        if: env.BUILD_UI == 'true'
-        working-directory: ./ui/
-
-      # Get API tag
-      - name: Get API Tag
-        run: echo "API_TAG=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
-        working-directory: ./api/
-
-      # Build API
-      - name: Build API
-        run: docker build -t $API_IMAGE_REPO:$API_TAG .
-        if: env.BUILD_API == 'true'
-        working-directory: ./api/
-
-      # Tag API
-      - name: Tag API
-        run: docker tag $API_IMAGE_REPO:$API_TAG $ECR_URI/$API_IMAGE_REPO:$API_TAG
-        if: env.BUILD_API == 'true'
-        working-directory: ./api/
-
-      # Assume provision account role
-      - name: Assume provision account role
-        uses: aws-actions/configure-aws-credentials@v1
+  # Build image repositories
+  build:
+    runs-on: ubuntu-latest
+    needs: [setenv]
+    environment:
+      name: ${{ needs.setenv.outputs.environment }}
+    outputs:
+      tag: ${{ steps.vars.outputs.tag }}
+    strategy:
+      fail-fast: true
+      matrix:
+        repo: [domain-manager-api, domain-manager-ui]
+    steps:
+      - uses: actions/checkout@v2
         with:
-          aws-region: ${{ env.REGION }}
-          role-duration-seconds: 1200
-          role-to-assume: ${{ env.ASSUME_ROLE }}
-          role-skip-session-tagging: true
-
-      # Confirm assumed role
-      - name: Confirm Assumed Role
-        run: aws sts get-caller-identity
-
-      # Login to ECR
-      - name: ECR Login
-        run: aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $ECR_URI
-
-      # Push UI
-      - name: Push UI
-        run: docker push $ECR_URI/$UI_IMAGE_REPO:$UI_TAG
-        if: env.BUILD_UI == 'true'
-
-      # Push API
-      - name: Push API
-        run: docker push $ECR_URI/$API_IMAGE_REPO:$API_TAG
-        if: env.BUILD_API == 'true'
-
-      # Set default AWS credentials
-      - uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.COOL_AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.COOL_AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ env.REGION }}
-
-      # Initialize Terraform
-      - name: Terraform init
-        working-directory: ./cicd/cool
-        run: terraform init -input=false
+          repository: cisagov/${{ matrix.repo }}
       
-      # Select terraform workspace
-      - name: Terraform Workspace
-        working-directory: ./cicd/cool
+      - name: Get Tag
+        id: tag
         run: |
-          terraform workspace select $ENVIRONMENT
-          terraform workspace show
+          echo "tag=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+          echo ::set-output name=tag::$tag
+          echo "$tag"
 
-      # Validate Terraform
-      - name: Terraform validation
-        working-directory: ./cicd/cool
-        run: terraform validate
+      # - name: Build
+      #   run: docker build -t $UI_IMAGE_REPO:$TAG .
+      #   if: env.BUILD_UI == 'true'
 
-      # Sometimes this just needs run again...
-      - name: Terraform init 2
-        working-directory: ./cicd/cool
-        run: terraform init -input=false
+      # - name: Tag
+      #   run: docker tag $UI_IMAGE_REPO:$TAG $ECR_URI/$UI_IMAGE_REPO:$TAG
 
-      # Plan terraform
-      - name: Terraform Plan
-        working-directory: ./cicd/cool
-        run: |
-          terraform plan \
-            -input=false \
-            -var-file ./vars/$ENVIRONMENT.tfvars \
-            -var="api_image_tag=$API_TAG" \
-            -var="ui_image_tag=$UI_TAG" \
-            -var="account_id=$ACCOUNT_ID" \
-            -var="shared_services_account_id=$SHARED_SERVICES_ACCOUNT_ID"
 
-      # Apply terraform
-      - name: Terraform Apply
-        working-directory: ./cicd/cool
-        run: |
-          terraform apply \
-            -input=false \
-            -auto-approve \
-            -var-file ./vars/$ENVIRONMENT.tfvars \
-            -var="api_image_tag=$API_TAG" \
-            -var="ui_image_tag=$UI_TAG" \
-            -var="account_id=$ACCOUNT_ID" \
-            -var="shared_services_account_id=$SHARED_SERVICES_ACCOUNT_ID"
-        if: env.IS_PULL_REQUEST == 'false'
+  # deploy:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     # Install Terraform
+  #     - uses: hashicorp/setup-terraform@v1
+  #       with:
+  #         terraform_version: 0.12.31
+
+  #     # Verify Terraform version
+  #     - name: Verify Terraform version
+  #       run: terraform --version
+
+  #     # Checkout cicd repo
+  #     - uses: actions/checkout@v2
+  #       with:
+  #         path: cicd
+
+  #     # Checkout API repo
+  #     - uses: actions/checkout@v2
+  #       with:
+  #         path: api
+  #         repository: cisagov/domain-manager-api
+
+  #     # Set default AWS credentials
+  #     - uses: aws-actions/configure-aws-credentials@v1
+  #       with:
+  #         aws-access-key-id: ${{ secrets.COOL_AWS_ACCESS_KEY_ID }}
+  #         aws-secret-access-key: ${{ secrets.COOL_AWS_SECRET_ACCESS_KEY }}
+  #         aws-region: ${{ env.REGION }}
+
+  #     # Output metadata
+  #     - name: Echo Metadata
+  #       run: |
+  #         echo ${{ github.event_name }}
+  #         echo ${{ github.event.action }}
+
+  #     # Get API tag
+  #     - name: Get API Tag
+  #       run: echo "API_TAG=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+  #       working-directory: ./api/
+
+  #     # Build API
+  #     - name: Build API
+  #       run: docker build -t $API_IMAGE_REPO:$API_TAG .
+  #       if: env.BUILD_API == 'true'
+  #       working-directory: ./api/
+
+  #     # Tag API
+  #     - name: Tag API
+  #       run: docker tag $API_IMAGE_REPO:$API_TAG $ECR_URI/$API_IMAGE_REPO:$API_TAG
+  #       if: env.BUILD_API == 'true'
+  #       working-directory: ./api/
+
+  #     # Assume provision account role
+  #     - name: Assume provision account role
+  #       uses: aws-actions/configure-aws-credentials@v1
+  #       with:
+  #         aws-region: ${{ env.REGION }}
+  #         role-duration-seconds: 1200
+  #         role-to-assume: ${{ env.ASSUME_ROLE }}
+  #         role-skip-session-tagging: true
+
+  #     # Confirm assumed role
+  #     - name: Confirm Assumed Role
+  #       run: aws sts get-caller-identity
+
+  #     # Login to ECR
+  #     - name: ECR Login
+  #       run: aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $ECR_URI
+
+  #     # Push UI
+  #     - name: Push UI
+  #       run: docker push $ECR_URI/$UI_IMAGE_REPO:$UI_TAG
+  #       if: env.BUILD_UI == 'true'
+
+  #     # Push API
+  #     - name: Push API
+  #       run: docker push $ECR_URI/$API_IMAGE_REPO:$API_TAG
+  #       if: env.BUILD_API == 'true'
+
+  #     # Set default AWS credentials
+  #     - uses: aws-actions/configure-aws-credentials@v1
+  #       with:
+  #         aws-access-key-id: ${{ secrets.COOL_AWS_ACCESS_KEY_ID }}
+  #         aws-secret-access-key: ${{ secrets.COOL_AWS_SECRET_ACCESS_KEY }}
+  #         aws-region: ${{ env.REGION }}
+
+  #     # Initialize Terraform
+  #     - name: Terraform init
+  #       working-directory: ./cicd/cool
+  #       run: terraform init -input=false
+      
+  #     # Select terraform workspace
+  #     - name: Terraform Workspace
+  #       working-directory: ./cicd/cool
+  #       run: |
+  #         terraform workspace select $ENVIRONMENT
+  #         terraform workspace show
+
+  #     # Validate Terraform
+  #     - name: Terraform validation
+  #       working-directory: ./cicd/cool
+  #       run: terraform validate
+
+  #     # Sometimes this just needs run again...
+  #     - name: Terraform init 2
+  #       working-directory: ./cicd/cool
+  #       run: terraform init -input=false
+
+  #     # Plan terraform
+  #     - name: Terraform Plan
+  #       working-directory: ./cicd/cool
+  #       run: |
+  #         terraform plan \
+  #           -input=false \
+  #           -var-file ./vars/$ENVIRONMENT.tfvars \
+  #           -var="api_image_tag=$API_TAG" \
+  #           -var="ui_image_tag=$UI_TAG" \
+  #           -var="account_id=$ACCOUNT_ID" \
+  #           -var="shared_services_account_id=$SHARED_SERVICES_ACCOUNT_ID"
+
+  #     # Apply terraform
+  #     - name: Terraform Apply
+  #       working-directory: ./cicd/cool
+  #       run: |
+  #         terraform apply \
+  #           -input=false \
+  #           -auto-approve \
+  #           -var-file ./vars/$ENVIRONMENT.tfvars \
+  #           -var="api_image_tag=$API_TAG" \
+  #           -var="ui_image_tag=$UI_TAG" \
+  #           -var="account_id=$ACCOUNT_ID" \
+  #           -var="shared_services_account_id=$SHARED_SERVICES_ACCOUNT_ID"
+  #       if: env.IS_PULL_REQUEST == 'false'
