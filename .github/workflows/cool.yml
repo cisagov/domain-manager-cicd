@@ -9,6 +9,8 @@ on:
 
 env:
   REGION: us-east-1
+  AWS_ACCESS_KEY_ID: ${{ secrets.COOL_AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.COOL_AWS_SECRET_ACCESS_KEY }}
 
 jobs:
   # Set Environment
