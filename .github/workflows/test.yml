@@ -10,7 +10,7 @@ jobs:
     steps:
       # Output metadata
       - name: Test
-        run: echo "production test3"
+        run: echo "production test4"
 
   test_production:
     runs-on: ubuntu-latest
