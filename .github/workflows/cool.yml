@@ -117,7 +117,7 @@ jobs:
       - name: Download API Tag Files
         uses: actions/download-artifact@v2
         with:
-          path: artifacts
+          path: cool/artifacts
       - name: Store tags in environment variables
         run: |
           echo "ui_tag=$(cat artifacts/domain-manager-ui/tag.txt)" >> $GITHUB_ENV
