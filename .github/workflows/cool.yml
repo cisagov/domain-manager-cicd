@@ -149,23 +149,14 @@ jobs:
             -var="ui_image_tag=$ui_tag" \
             -var="account_id=$ACCOUNT_ID" \
             -var="shared_services_account_id=$SHARED_SERVICES_ACCOUNT_ID"
-      
-
-
-
-  # deploy:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     # Apply terraform
-  #     - name: Terraform Apply
-  #       working-directory: ./cicd/cool
-  #       run: |
-  #         terraform apply \
-  #           -input=false \
-  #           -auto-approve \
-  #           -var-file ./vars/$ENVIRONMENT.tfvars \
-  #           -var="api_image_tag=$API_TAG" \
-  #           -var="ui_image_tag=$UI_TAG" \
-  #           -var="account_id=$ACCOUNT_ID" \
-  #           -var="shared_services_account_id=$SHARED_SERVICES_ACCOUNT_ID"
-  #       if: env.IS_PULL_REQUEST == 'false'
+      - name: Terraform apply
+        run: |
+          terraform apply \
+            -input=false \
+            -auto-approve \
+            -var-file ./vars/$ENVIRONMENT.tfvars \
+            -var="api_image_tag=$api_tag" \
+            -var="ui_image_tag=$ui_tag" \
+            -var="account_id=$ACCOUNT_ID" \
+            -var="shared_services_account_id=$SHARED_SERVICES_ACCOUNT_ID"
+        if: ${{ github.event_name != 'pull_request' }}
