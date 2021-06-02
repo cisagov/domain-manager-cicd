@@ -112,16 +112,19 @@ jobs:
       # (Build, Tag, Push)
       # The others run so we can be more proactive about catching issues
       # in pull requests before they are an issue on deployment.
+      - name: Set TO_BUILD
+        run: echo "build=true" >> $GITHUB_ENV
+        if: ${{ github.event.client_payload.trigger == matrix.repo || github.event.action == 'cool_production'}}      
 
       # Build image if not a pull request
       - name: Build
         run: docker build -t ${{ matrix.repo }}:$tag .
-        if: ${{ github.event_name != 'pull_request' }}
+        if: ${{ env.build == 'true' }}
 
       # Tag image if not a pull request
       - name: Tag
         run: docker tag ${{ matrix.repo }}:$tag $ecr_uri/${{ matrix.repo }}:$tag
-        if: ${{ github.event_name != 'pull_request' }}
+        if: ${{ env.build == 'true' }}
 
       # Assume role to push images to ECR
       - name: Assume provision account role
@@ -143,7 +146,7 @@ jobs:
       # Push to ECR if not a pull request
       - name: Push to ECR
         run: docker push $ecr_uri/${{ matrix.repo }}:$tag
-        if: ${{ github.event_name != 'pull_request' }}
+        if: ${{ env.build == 'true' }}
 
   # Runs terraform
   deploy:
