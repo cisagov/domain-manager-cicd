@@ -42,8 +42,6 @@ jobs:
       ACCOUNT_ID: ${{ secrets.ACCOUNT_ID }}
     environment:
       name: ${{ needs.setenv.outputs.environment }}
-    outputs:
-      tag: ${{ steps.vars.outputs.tag }}
     strategy:
       fail-fast: false
       matrix:
@@ -62,8 +60,13 @@ jobs:
         id: tag
         run: |
           echo "tag=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
-          echo ::set-output name=tag::$tag
-          echo "$tag"
+          echo "$tag" > tag.txt
+
+      - name: Upload Tag Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.repo }}
+          path: tag.txt
 
       - name: Build
         run: docker build -t ${{ matrix.repo }}:$tag .
@@ -94,9 +97,17 @@ jobs:
   # Run terraform
   deploy:
     runs-on: ubuntu-latest
-    needs: [setenv, build]
+    needs: [build]
     steps:
-      - run: echo "${{ needs.build.outputs.tag }}"
+      - name: Download API Tag File
+        uses: actions/download-artifact@v2
+        with:
+          path: tags
+      - run: ls
+      - run: ls tags/
+      - run: ls tags/domain-manager-ui/
+      - run: cat tags/domain-manager-ui/tag.txt
+
 
 
   # deploy:
