@@ -110,7 +110,9 @@ jobs:
       run:
         working-directory: cool
     env:
+      ACCOUNT_ID: ${{ secrets.ACCOUNT_ID }}
       ENVIRONMENT: ${{ needs.setenv.outputs.environment }}
+      SHARED_SERVICES_ACCOUNT_ID: ${{ secrets.SHARED_SERVICES_ACCOUNT_ID }}
     environment:
       name: ${{ needs.setenv.outputs.environment }}
     steps:
