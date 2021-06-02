@@ -105,10 +105,14 @@ jobs:
   # Run terraform
   deploy:
     runs-on: ubuntu-latest
-    needs: [build]
+    needs: [setenv, build]
     defaults:
       run:
         working-directory: cool
+    env:
+      ENVIRONMENT: ${{ needs.setenv.outputs.environment }}
+    environment:
+      name: ${{ needs.setenv.outputs.environment }}
     steps:
       - uses: actions/checkout@v2
       - uses: hashicorp/setup-terraform@v1
@@ -126,7 +130,23 @@ jobs:
         run: terraform --version
       - name: Terraform init
         run: terraform init -input=false
-        
+      - name: Terraform workspace
+        run: |
+          terraform workspace select $ENVIRONMENT
+          terraform workspace show
+      - name: Validate terraform
+        run: terraform validate
+      - name: Terraform init 2
+        run: terraform init -input=false
+      - name: Terraform plan
+        run: |
+          terraform plan \
+            -input=false \
+            -var-file ./vars/$ENVIRONMENT.tfvars \
+            -var="api_image_tag=$api_tag" \
+            -var="ui_image_tag=$ui_tag" \
+            -var="account_id=$ACCOUNT_ID" \
+            -var="shared_services_account_id=$SHARED_SERVICES_ACCOUNT_ID"
       
 
 
@@ -134,41 +154,6 @@ jobs:
   # deploy:
   #   runs-on: ubuntu-latest
   #   steps:
-
-  #     # Initialize Terraform
-  #     - name: Terraform init
-  #       working-directory: ./cicd/cool
-  #       run: terraform init -input=false
-      
-  #     # Select terraform workspace
-  #     - name: Terraform Workspace
-  #       working-directory: ./cicd/cool
-  #       run: |
-  #         terraform workspace select $ENVIRONMENT
-  #         terraform workspace show
-
-  #     # Validate Terraform
-  #     - name: Terraform validation
-  #       working-directory: ./cicd/cool
-  #       run: terraform validate
-
-  #     # Sometimes this just needs run again...
-  #     - name: Terraform init 2
-  #       working-directory: ./cicd/cool
-  #       run: terraform init -input=false
-
-  #     # Plan terraform
-  #     - name: Terraform Plan
-  #       working-directory: ./cicd/cool
-  #       run: |
-  #         terraform plan \
-  #           -input=false \
-  #           -var-file ./vars/$ENVIRONMENT.tfvars \
-  #           -var="api_image_tag=$API_TAG" \
-  #           -var="ui_image_tag=$UI_TAG" \
-  #           -var="account_id=$ACCOUNT_ID" \
-  #           -var="shared_services_account_id=$SHARED_SERVICES_ACCOUNT_ID"
-
   #     # Apply terraform
   #     - name: Terraform Apply
   #       working-directory: ./cicd/cool
