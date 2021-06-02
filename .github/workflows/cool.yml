@@ -57,10 +57,13 @@ jobs:
           echo "ecr_uri=$ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com" >> $GITHUB_ENV
 
       - name: Get Tag
-        id: tag
-        run: |
-          echo "tag=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
-          echo "$tag" > tag.txt
+        run: echo "tag=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
+      - name: Display Tag
+        run: echo "$tag"
+      
+      - name: Create Tag Artifact
+        run: echo "$tag" > tag.txt
 
       - name: Upload Tag Artifact
         uses: actions/upload-artifact@v2
