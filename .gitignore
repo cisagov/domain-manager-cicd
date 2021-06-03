@@ -6,3 +6,5 @@ terraform/output
 debug.log
 *.zip
 .DS_Store
+.python-version
+config.ini
