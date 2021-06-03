@@ -86,7 +86,6 @@ resource "aws_ecs_service" "service" {
   force_new_deployment  = true
   launch_type           = "FARGATE"
   tags                  = local.tags
-  wait_for_steady_state = true
 
   load_balancer {
     target_group_arn = aws_lb_target_group.api.arn
