@@ -4,6 +4,18 @@ import configparser
 import requests
 
 
+@click.group()
+@click.pass_context
+def cli(ctx):
+    return
+
+
+def main():
+    cli.add_command(deploy)
+    cli.add_command(configure)
+    cli()
+
+
 @click.command()
 @click.option(
     "--environment",
@@ -75,4 +87,4 @@ def get_auth_header(token):
 
 
 if __name__ == "__main__":
-    deploy()
+    main()

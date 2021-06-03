@@ -17,12 +17,17 @@ The source repositories access dispatch the CICD repository through the using of
 
 ## Deploying Manually
 
-There is a [deploy](deploy.py) script that allows you to deploy manually. On configure, it will ask for a Github access token. You can find the instructions for creating one [here](https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token). After creating an access token, you can simply run the following for a deployment.
+There is a [deploy](deploy.py) script that allows you to deploy manually. On configure, it will ask for a Github access token. You can find the instructions for creating one [here](https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token). The following permissions are required.
+
+- [ ] repo
+  - [x] public_repo
+
+After creating an access token, you can simply run the following for a deployment.
 
 ```python
 pip install -r requirements.txt
 python deploy.py configure
-python deploy.py --environment staging|production
+python deploy.py deploy --environment staging|production
 ```
 
 ## Contributing
