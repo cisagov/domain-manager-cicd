@@ -80,6 +80,21 @@ variable "documentdb_instance_class" {
 }
 
 #=================================================
+#  Resources
+#=================================================
+variable "cpu" {
+  type = number
+}
+
+variable "memory" {
+  type = number
+}
+
+variable "desired_count" {
+  type= number
+}
+
+#=================================================
 #  API
 #=================================================
 variable "api_image_repo" {
@@ -88,18 +103,6 @@ variable "api_image_repo" {
 
 variable "api_image_tag" {
   type = string
-}
-
-variable "api_cpu" {
-  type = number
-}
-
-variable "api_memory" {
-  type = number
-}
-
-variable "api_desired_count" {
-  type = number
 }
 
 #=================================================
@@ -111,31 +114,4 @@ variable "ui_image_repo" {
 
 variable "ui_image_tag" {
   type = string
-}
-
-variable "ui_memory" {
-  type = number
-}
-
-variable "ui_cpu" {
-  type = number
-}
-
-variable "ui_desired_count" {
-  type = number
-}
-
-#=================================================
-#  BROWSERLESS
-#=================================================
-variable "browserless_cpu" {
-  type = number
-}
-
-variable "browserless_memory" {
-  type = number
-}
-
-variable "browserless_count" {
-  type = number
 }

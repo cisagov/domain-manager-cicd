@@ -1,6 +1,6 @@
 locals {
   api_name               = "${var.app}-${var.env}-api"
-  api_container_name     = "${var.app}-api"
+  api_container_name     = "api"
   api_container_port     = 5000
   api_container_protocol = "HTTP"
   api_load_balancer_port = 443
@@ -35,6 +35,7 @@ locals {
   }
 }
 
+
 # ===========================
 # APP CREDENTIALS
 # ===========================
@@ -60,47 +61,6 @@ resource "aws_cloudwatch_log_group" "api" {
   name              = local.api_name
   retention_in_days = var.log_retention_days
   tags              = local.tags
-}
-
-# ===========================
-# ALB TARGET GROUPS
-# ===========================
-resource "aws_lb_target_group" "api" {
-  name        = local.api_name
-  port        = local.api_container_port
-  protocol    = local.api_container_protocol
-  target_type = "ip"
-  vpc_id      = local.vpc_id
-  tags        = local.tags
-
-  health_check {
-    healthy_threshold   = 3
-    interval            = 60
-    matcher             = "200"
-    path                = "/"
-    port                = local.api_container_port
-    protocol            = local.api_container_protocol
-    unhealthy_threshold = 3
-  }
-}
-
-#=========================
-# ALB LISTENER RULE
-#=========================
-resource "aws_lb_listener_rule" "api" {
-  listener_arn = aws_lb_listener.https.arn
-  priority     = 100
-
-  action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.api.arn
-  }
-
-  condition {
-    path_pattern {
-      values = ["/api/*", "/api/", "/api"]
-    }
-  }
 }
 
 # ===========================
@@ -134,77 +94,4 @@ module "api_container" {
       value = local.api_environment[key]
     }
   ]
-}
-
-#=========================
-# TASK DEFINITION
-#=========================
-resource "aws_ecs_task_definition" "api" {
-  family                   = local.api_name
-  container_definitions    = module.api_container.json_map_encoded_list
-  cpu                      = var.api_cpu
-  execution_role_arn       = aws_iam_role.ecs_execution.arn
-  memory                   = var.api_memory
-  network_mode             = "awsvpc"
-  requires_compatibilities = ["FARGATE"]
-  task_role_arn            = aws_iam_role.ecs_task.arn
-  tags                     = local.tags
-}
-
-#=========================
-# SERVICE
-#=========================
-resource "aws_ecs_service" "api" {
-  name            = local.api_container_name
-  cluster         = aws_ecs_cluster.cluster.id
-  task_definition = aws_ecs_task_definition.api.arn
-  desired_count   = var.api_desired_count
-  launch_type     = "FARGATE"
-  tags            = local.tags
-
-  load_balancer {
-    target_group_arn = aws_lb_target_group.api.arn
-    container_name   = local.api_container_name
-    container_port   = local.api_container_port
-  }
-
-  network_configuration {
-    subnets          = local.private_subnet_ids
-    security_groups  = [aws_security_group.api.id]
-    assign_public_ip = false
-  }
-
-  lifecycle {
-    ignore_changes = [desired_count]
-  }
-}
-
-# ===========================
-# SECURITY GROUP
-# ===========================
-resource "aws_security_group" "api" {
-  name        = "${local.api_name}-alb"
-  description = "Allow traffic for api from alb"
-  vpc_id      = local.vpc_id
-
-  ingress {
-    description     = "Allow container port from ALB"
-    from_port       = local.api_container_port
-    to_port         = local.api_container_port
-    protocol        = "tcp"
-    security_groups = [aws_security_group.alb.id]
-    self            = true
-  }
-
-  egress {
-    description = "Allow outbound traffic"
-    from_port   = 0
-    to_port     = 0
-    protocol    = -1
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = merge({
-    "Name" = "${local.api_name}-alb"
-  }, local.tags)
 }

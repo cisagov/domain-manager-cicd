@@ -37,24 +37,18 @@ documentdb_cluster_size = 1
 documentdb_instance_class = "db.t3.medium"
 
 #=================================================
+#  Resources
+#=================================================
+cpu = 2048
+memory = 4096
+desired_count = 1
+
+#=================================================
 #  API
 #=================================================
 api_image_repo = "domain-manager-api"
-api_cpu = 2048
-api_memory = 4096
-api_desired_count = 1
 
 #=================================================
 #  UI
 #=================================================
 ui_image_repo = "domain-manager-ui"
-ui_cpu = 2048
-ui_memory = 4096
-ui_desired_count = 1
-
-#=================================================
-#  BROWSERLESS
-#=================================================
-browserless_cpu = 512
-browserless_memory = 1024
-browserless_count = 1
