@@ -13,9 +13,9 @@ resource "aws_ecs_task_definition" "task" {
   family = "${var.app}-${var.env}"
   
   container_definitions = jsonencode([
-    module.ui_container.json_map_encoded,
-    module.api_container.json_map_encoded,
-    module.browserless_container.json_map_encoded,
+    module.ui_container.json_map_object,
+    module.api_container.json_map_object,
+    module.browserless_container.json_map_object,
   ])
 
   cpu                      = var.cpu
