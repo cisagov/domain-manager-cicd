@@ -45,7 +45,7 @@ module "documentdb" {
   vpc_id          = local.vpc_id
   subnet_ids      = local.private_subnet_ids
   # allowed_cidr_blocks = ["10.0.0.0/8"]
-  allowed_security_groups = [aws_security_group.api.id]
+  allowed_security_groups = [aws_security_group.service.id]
   skip_final_snapshot     = true
   tags                    = local.tags
 }
