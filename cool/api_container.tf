@@ -29,8 +29,8 @@ locals {
     "AWS_COGNITO_USER_POOL_CLIENT_ID" : aws_cognito_user_pool_client.client.id
     "AWS_COGNITO_ADMIN_GROUP_NAME" : aws_cognito_user_group.admin.name
     "TWO_CAPTCHA" : aws_ssm_parameter.two_captcha.value
-    "SES_ASSUME_ROLE_ARN" : "arn:aws:iam::246048611598:role/SesSendEmail-cyber.dhs.gov"
-    "SMTP_FROM" : "domainmanager@cyber.dhs.gov"
+    "SES_ASSUME_ROLE_ARN" : var.ses_arn
+    "SMTP_FROM" : var.ses_from
     "NEW_USER_NOTIFICATION_EMAIL_ADDRESS": var.new_user_notification_email_address
   }
 }
