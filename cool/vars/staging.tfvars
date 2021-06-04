@@ -13,6 +13,7 @@ region = "us-east-1"
 #=================================================
 #  EMAILS NOTIFICATIONS
 #=================================================
+ses_from = "domainmanager-staging@cyber.dhs.gov"
 new_user_notification_email_address = "domainmanager-aaaacmecaofdaenpbzd4gkrxoq@cset-group.slack.com"
 
 #=================================================

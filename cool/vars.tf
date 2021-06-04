@@ -40,8 +40,18 @@ variable "region" {
 #=================================================
 #  EMAILS NOTIFICATIONS
 #=================================================
+variable "ses_arn" {
+  type        = string
+  description = "ARN for sending email through SES"
+}
+
+variable "ses_from" {
+  type        = string
+  description = "From email address for notifications"
+}
+
 variable "new_user_notification_email_address" {
-  type = string
+  type        = string
   description = "An admin email group for notifiying when a new user is registered"
 }
 
