@@ -37,6 +37,33 @@ variable "region" {
   type = string
 }
 
+variable "is_cool" {
+  type        = bool
+  default     = true
+  description = "Whether environment is in the COOL."
+}
+
+#=================================================
+#  NETWORKING
+#=================================================
+variable "vpc_id" {
+  type        = string
+  default     = null
+  description = "Optional VPC Id to provide, otherwise uses remote state."
+}
+
+variable "private_subnet_ids" {
+  type        = list(string)
+  default     = null
+  description = "Optional private subnet ids to provide, otherwise uses remote state."
+}
+
+variable "public_subnet_ids" {
+  type        = list(string)
+  default     = null
+  description = "Optional public subnet ids to provide, otherwise uses remote state."
+}
+
 #=================================================
 #  EMAILS NOTIFICATIONS
 #=================================================
@@ -55,12 +82,18 @@ variable "new_user_notification_email_address" {
   description = "An admin email group for notifiying when a new user is registered"
 }
 
-
 #=================================================
 #  ROUTE 53
 #=================================================
+variable "hosted_zone_name" {
+  type        = string
+  default     = null
+  description = "Name of hosted zone if running outside of COOL."
+}
+
 variable "internal_route53_record" {
-  type = string
+  type        = string
+  description = "Route53 record name to access application."
 }
 
 #=================================================

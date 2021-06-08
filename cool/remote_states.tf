@@ -1,4 +1,6 @@
 data "terraform_remote_state" "domainmanager_networking" {
+  count = var.is_cool == true ? 1 : 0
+  
   backend = "s3"
 
   config = {
@@ -15,6 +17,8 @@ data "terraform_remote_state" "domainmanager_networking" {
 }
 
 data "terraform_remote_state" "sharedservices_networking" {
+  count = var.is_cool == true ? 1 : 0
+
   backend = "s3"
 
   config = {
