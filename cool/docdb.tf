@@ -44,7 +44,6 @@ module "documentdb" {
   instance_class          = var.documentdb_instance_class
   vpc_id                  = local.vpc_id
   subnet_ids              = local.private_subnet_ids
-  allowed_cidr_blocks     = var.env == "staging" ? ["10.0.0.0/8"] : null
   allowed_security_groups = [aws_security_group.service.id]
   skip_final_snapshot     = true
   tags                    = local.tags
