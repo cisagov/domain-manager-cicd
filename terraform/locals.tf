@@ -43,6 +43,9 @@ locals {
     "SES_ASSUME_ROLE_ARN" : "arn:aws:iam::246048611598:role/SesSendEmail-cyber.dhs.gov"
     "SMTP_FROM" : "domainmanager@cyber.dhs.gov"
     "NEW_USER_NOTIFICATION_EMAIL_ADDRESS": var.new_user_notification_email_address
+    "DEPLOYED_DATE": var.deployed_date
+    "API_COMMIT_ID": var.api_image_tag
+    "UI_COMMIT_ID": var.ui_image_tag
   }
 
   # BROWSERLESS LOCALS

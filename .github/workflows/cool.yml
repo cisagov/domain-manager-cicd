@@ -13,7 +13,7 @@ on:
   # staging environment.
   push:
     branches: [develop]
-  
+
   # Will deploy to production if event is cool_production,
   # otherwise deploy to staging environment.
   repository_dispatch:
@@ -77,12 +77,11 @@ jobs:
       matrix:
         repo: [domain-manager-api, domain-manager-ui]
     steps:
-
       # Checkout repo to build against
       - uses: actions/checkout@v2
         with:
           repository: cisagov/${{ matrix.repo }}
-      
+
       # Set needed job vars
       - name: Set vars
         run: |
@@ -96,7 +95,7 @@ jobs:
       # Print out tag
       - name: Display Tag
         run: echo "$tag"
-      
+
       # Uploads the tag to an artifact to be used in the terraform job
       # Can't define as an output, as it's not really supported when
       # using the matrix strategy.
@@ -114,7 +113,7 @@ jobs:
       # in pull requests before they are an issue on deployment.
       - name: Set TO_BUILD
         run: echo "build=true" >> $GITHUB_ENV
-        if: ${{ github.event.client_payload.trigger == matrix.repo || github.event.action == 'cool_production'}}      
+        if: ${{ github.event.client_payload.trigger == matrix.repo || github.event.action == 'cool_production'}}
 
       # Build image if not a pull request
       - name: Build
@@ -224,7 +223,8 @@ jobs:
             -var="ui_image_tag=$ui_tag" \
             -var="account_id=$ACCOUNT_ID" \
             -var="shared_services_account_id=$SHARED_SERVICES_ACCOUNT_ID" \
-            -var="ses_arn=$SES_ARN"
+            -var="ses_arn=$SES_ARN" \
+            -var="deployed_date=$(date)"
 
       # Applies terraform if it's not a pull request.
       - name: Terraform apply
@@ -237,5 +237,6 @@ jobs:
             -var="ui_image_tag=$ui_tag" \
             -var="account_id=$ACCOUNT_ID" \
             -var="shared_services_account_id=$SHARED_SERVICES_ACCOUNT_ID" \
-            -var="ses_arn=$SES_ARN"
+            -var="ses_arn=$SES_ARN" \
+            -var="deployed_date=$(date)"
         if: ${{ github.event_name != 'pull_request' }}
