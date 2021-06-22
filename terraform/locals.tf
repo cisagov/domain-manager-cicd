@@ -42,10 +42,10 @@ locals {
     "TWO_CAPTCHA" : data.aws_ssm_parameter.two_captcha.value
     "SES_ASSUME_ROLE_ARN" : "arn:aws:iam::246048611598:role/SesSendEmail-cyber.dhs.gov"
     "SMTP_FROM" : "domainmanager@cyber.dhs.gov"
-    "NEW_USER_NOTIFICATION_EMAIL_ADDRESS": var.new_user_notification_email_address
-    "DEPLOYED_DATE": var.deployed_date
-    "API_COMMIT_ID": var.api_image_tag
-    "UI_COMMIT_ID": var.ui_image_tag
+    "NEW_USER_NOTIFICATION_EMAIL_ADDRESS" : var.new_user_notification_email_address
+    "DEPLOYED_DATE" : var.deployed_date
+    "API_COMMIT_ID" : var.api_image_tag
+    "UI_COMMIT_ID" : var.ui_image_tag
   }
 
   # BROWSERLESS LOCALS
@@ -62,5 +62,7 @@ locals {
 
   ui_environment = {
     "API_URL" : "https://${aws_route53_record.domain.name}"
+    "DEPLOYED_DATE" : var.deployed_date
+    "UI_COMMIT_ID" : var.ui_image_tag
   }
 }
