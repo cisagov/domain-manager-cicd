@@ -137,3 +137,10 @@ variable "browserless_memory" {
 variable "browserless_count" {
   type = number
 }
+
+#=================================================
+#  ABOUT
+#=================================================
+variable "deployed_date" {
+  type = string
+}

@@ -125,3 +125,10 @@ variable "ui_image_repo" {
 variable "ui_image_tag" {
   type = string
 }
+
+#=================================================
+#  ABOUT
+#=================================================
+variable "deployed_date" {
+  type = string
+}

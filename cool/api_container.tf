@@ -32,6 +32,9 @@ locals {
     "SES_ASSUME_ROLE_ARN" : var.ses_arn
     "SMTP_FROM" : var.ses_from
     "NEW_USER_NOTIFICATION_EMAIL_ADDRESS": var.new_user_notification_email_address
+    "DEPLOYED_DATE": var.deployed_date
+    "API_COMMIT_ID": var.api_image_tag
+    "UI_COMMIT_ID": var.ui_image_tag
   }
 }
 

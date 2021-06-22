@@ -7,6 +7,8 @@ locals {
 
   ui_environment = {
     "API_URL" : "https://${aws_route53_record.sharedservices_internal_domainmanager.name}"
+    "DEPLOYED_DATE" : var.deployed_date
+    "UI_COMMIT_ID" : var.ui_image_tag
   }
 }
 
