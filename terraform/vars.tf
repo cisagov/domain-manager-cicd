@@ -1,9 +1,9 @@
 #=================================================
 #  PROVIDER
 #=================================================
-
-variable "workspace_type" {
+variable "shared_services_account_id" {
   type = string
+  description = "Account ID for DNS shared services role."
 }
 
 variable "account_id" {
@@ -148,6 +148,19 @@ variable "browserless_memory" {
 
 variable "browserless_count" {
   type = number
+}
+
+#=================================================
+#  EMAILS NOTIFICATIONS
+#=================================================
+variable "ses_arn" {
+  type        = string
+  description = "ARN for sending email through SES"
+}
+
+variable "ses_from" {
+  type        = string
+  description = "From email address"
 }
 
 #=================================================
