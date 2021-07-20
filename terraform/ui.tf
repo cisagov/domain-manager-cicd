@@ -52,7 +52,7 @@ resource "aws_cloudwatch_log_group" "ui" {
 module "ui_container" {
   source          = "github.com/cloudposse/terraform-aws-ecs-container-definition"
   container_name  = local.ui_container_name
-  container_image = "${var.ui_image_repo}:${var.ui_image_tag}"
+  container_image = "${account_id}.dkr.ecr.us-east-1.amazonaws.com/${var.ui_image_repo}:${var.ui_image_tag}"
   essential       = "true"
   log_configuration = {
     logDriver = "awslogs"
