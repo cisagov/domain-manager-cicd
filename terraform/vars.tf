@@ -146,14 +146,6 @@ variable "browserless_count" {
 }
 
 #=================================================
-#  EMAILS NOTIFICATIONS
-#=================================================
-variable "ses_arn" {
-  type        = string
-  description = "ARN for sending email through SES"
-}
-
-#=================================================
 #  ABOUT
 #=================================================
 variable "deployed_date" {
