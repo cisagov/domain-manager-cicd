@@ -153,11 +153,6 @@ variable "ses_arn" {
   description = "ARN for sending email through SES"
 }
 
-variable "ses_from" {
-  type        = string
-  description = "From email address"
-}
-
 #=================================================
 #  ABOUT
 #=================================================
