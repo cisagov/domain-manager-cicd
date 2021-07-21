@@ -159,3 +159,4 @@ jobs:
             -var="api_image_tag=${{needs.build_api.outputs.tag}}" \
             -var="ui_image_tag=${{needs.build_ui.outputs.tag}}" \
             -var="deployed_date=$(date)"
+        if: ${{ github.event_name != 'pull_request' }}
