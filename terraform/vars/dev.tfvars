@@ -54,7 +54,7 @@ documentdb_instance_class = "db.t3.medium"
 #=================================================
 #  API
 #=================================================
-api_image_repo = "780016325729.dkr.ecr.us-east-1.amazonaws.com/domain-manager-api"
+api_image_repo = "domain-manager-api"
 api_cpu = 2048
 api_memory = 4096
 api_desired_count = 1
@@ -62,7 +62,7 @@ api_desired_count = 1
 #=================================================
 #  UI
 #=================================================
-ui_image_repo = "780016325729.dkr.ecr.us-east-1.amazonaws.com/domain-manager-ui"
+ui_image_repo = "domain-manager-ui"
 ui_cpu = 2048
 ui_memory = 4096
 ui_desired_count = 1
