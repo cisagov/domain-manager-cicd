@@ -23,6 +23,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       IMAGE_REPO: domain-manager-ui
+    environment:
+      name: develop
     outputs:
       tag: ${{ steps.vars.outputs.tag }}
     steps:
@@ -49,6 +51,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       IMAGE_REPO: domain-manager-api
+    environment:
+      name: develop
     outputs:
       tag: ${{ steps.vars.outputs.tag }}
     steps:
