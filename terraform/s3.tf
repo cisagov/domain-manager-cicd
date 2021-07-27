@@ -46,3 +46,25 @@ POLICY
     index_document = "home.html"
   }
 }
+
+
+resource "aws_s3_bucket" "emails" {
+  bucket = "${var.app}-${var.env}-emails"
+  acl    = "public-read"
+  policy = <<POLICY
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "AllowSESPuts",
+            "Effect": "Allow",
+            "Principal": {
+                "Service": "ses.amazonaws.com"
+            },
+            "Action": "s3:PutObject",
+            "Resource": "arn:aws:s3:::${var.app}-${var.env}-emails/*"
+        }
+    ]
+}
+POLICY
+}
