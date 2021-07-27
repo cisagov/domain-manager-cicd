@@ -50,7 +50,7 @@ POLICY
 
 resource "aws_s3_bucket" "emails" {
   bucket = "${var.app}-${var.env}-emails"
-  acl    = "public-read"
+  acl    = "private"
   policy = <<POLICY
 {
     "Version": "2012-10-17",
