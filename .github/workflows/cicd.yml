@@ -93,19 +93,19 @@ jobs:
         with:
           path: domain-manager-cicd
 
-      # Install python 3.8 for installing lambda layer
-      - uses: actions/setup-python@v2
-        with:
-          python-version: 3.8
-      - name: Upgrade Pip
-        run: pip install --upgrade pip
-
       # Install Terraform
       - uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: 0.13.3
       - name: Verify Terraform version
         run: terraform --version
+
+      # Install python 3.8 for installing lambda layer
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - name: Upgrade Pip
+        run: pip install --upgrade pip
 
       # Install Lambda Layer
       - name: Install Python Requirements
