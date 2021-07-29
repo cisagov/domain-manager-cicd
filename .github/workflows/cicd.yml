@@ -62,6 +62,15 @@ jobs:
       - name: Get Tag
         id: vars
         run: echo ::set-output name=tag::$(git rev-parse --short HEAD)
+      # Install python 3.8 for installing lambda layer
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - name: Upgrade Pip
+        run: pip install --upgrade pip
+        # Install reqs
+      - name: Install Python Requirements
+        run: pip install -r ../../con-pca-api/requirements.txt --no-deps -t ./layer/python
       - name: Build Docker Image
         run: docker build -t $IMAGE_REPO:${{steps.vars.outputs.tag}} .
         if: ${{ github.event.client_payload.trigger == env.IMAGE_REPO }}
