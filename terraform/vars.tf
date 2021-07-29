@@ -151,3 +151,14 @@ variable "browserless_count" {
 variable "deployed_date" {
   type = string
 }
+
+#=================================================
+#  TASKS
+#=================================================
+variable "tasks_memory" {
+  type = number
+}
+
+variable "tasks_timeout" {
+  type = number
+}

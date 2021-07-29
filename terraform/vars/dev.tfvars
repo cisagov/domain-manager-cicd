@@ -73,3 +73,9 @@ ui_desired_count = 1
 browserless_cpu = 512
 browserless_memory = 1024
 browserless_count = 1
+
+#=================================================
+#  TASKS
+#=================================================
+tasks_memory = 2048
+tasks_timeout = 870
