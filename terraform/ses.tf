@@ -9,7 +9,7 @@ resource "aws_ses_receipt_rule" "domains" {
   scan_enabled  = true
 
   lambda_action {
-    function_arn = ""
+    function_arn = aws_lambda_function.process_tasks.arn
     position     = 1
   }
 }
