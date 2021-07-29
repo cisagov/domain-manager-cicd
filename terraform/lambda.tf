@@ -28,7 +28,7 @@ data "archive_file" "code" {
   output_path = "${path.module}/output/code.zip"
 }
 
-resource "aws_lambda_function" "process_tasks" {
+resource "aws_lambda_function" "receive_emails" {
   filename         = data.archive_file.code.output_path
   function_name    = "${var.app}-${var.env}-process-tasks"
   handler          = "lambda_functions.tasks.process_tasks.lambda_handler"
@@ -45,7 +45,7 @@ resource "aws_lambda_function" "process_tasks" {
   }
 
   vpc_config {
-    subnet_ids         = local.private_subnet_ids
+    subnet_ids         = var.private_subnet_ids
     security_group_ids = [aws_security_group.api.id]
   }
 }
