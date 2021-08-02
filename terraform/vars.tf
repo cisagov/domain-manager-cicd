@@ -155,10 +155,10 @@ variable "deployed_date" {
 #=================================================
 #  TASKS
 #=================================================
-variable "tasks_memory" {
+variable "lambda_memory" {
   type = number
 }
 
-variable "tasks_timeout" {
+variable "lambda_timeout" {
   type = number
 }
