@@ -170,6 +170,9 @@ jobs:
     steps:
       # Checkout this repository
       - uses: actions/checkout@v2
+        with:
+          repository: cisagov/domain-manager-cicd
+          path: domain-manager-cicd
 
       # Checkout domain-manager api repo
       - uses: actions/checkout@v2
@@ -204,8 +207,8 @@ jobs:
       # Install Lambda Layer
       - name: Install Python Requirements
         run: |
-          mkdir ./domain-manager-cicd/terraform/layer
-          mkdir ./domain-manager-cicd/terraform/layer/python
+          mkdir ./domain-manager-cicd/cool/layer
+          mkdir ./domain-manager-cicd/cool/layer/python
           pip install -r ./domain-manager-api/requirements.txt -t ./domain-manager-cicd/terraform/layer/python
 
       # Verifies terraform is installed properly
