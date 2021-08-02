@@ -46,6 +46,6 @@ resource "aws_lambda_function" "receive_emails" {
 
   vpc_config {
     subnet_ids         = local.private_subnet_ids
-    security_group_ids = [aws_security_group.alb.id]
+    security_group_ids = [aws_security_group.service.id]
   }
 }
