@@ -171,6 +171,12 @@ jobs:
       # Checkout this repository
       - uses: actions/checkout@v2
 
+      # Checkout domain-manager api repo
+      - uses: actions/checkout@v2
+        with:
+          repository: cisagov/domain-manager-api
+          path: domain-manager-api
+
       # Install and setup terraform
       - uses: hashicorp/setup-terraform@v1
         with:
