@@ -203,7 +203,10 @@ jobs:
 
       # Install Lambda Layer
       - name: Install Python Requirements
-        run: pip install -r ./domain-manager-api/requirements.txt --no-deps -t ./layer/python
+        run: |
+          mkdir ./domain-manager-cicd/terraform/layer
+          mkdir ./domain-manager-cicd/terraform/layer/python
+          pip install -r ./domain-manager-api/requirements.txt -t ./domain-manager-cicd/terraform/layer/python
 
       # Verifies terraform is installed properly
       - name: Verify Terraform version
