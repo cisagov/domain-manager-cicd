@@ -207,7 +207,6 @@ jobs:
       # Install Lambda Layer
       - name: Install Python Requirements
         run: |
-          mkdir ./layer
           mkdir ./layer/python
           pip install -r ./domain-manager-api/requirements.txt -t ./layer/python
 
