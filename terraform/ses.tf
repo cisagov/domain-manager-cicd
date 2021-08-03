@@ -6,6 +6,7 @@ resource "aws_lambda_permission" "ses_receive_emails" {
   principal      = "ses.amazonaws.com"
   action         = "lambda:InvokeFunction"
   source_account = var.account_id
+  function_name  = aws_lambda_function.receive_emails.name
 }
 
 # ===================================
