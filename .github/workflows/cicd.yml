@@ -146,6 +146,7 @@ jobs:
             -var="account_id=$ACCOUNT_ID" \
             -var="api_image_tag=${{needs.build_api.outputs.tag}}" \
             -var="ui_image_tag=${{needs.build_ui.outputs.tag}}" \
+            -var="ses_arn=$SES_ARN" \
             -var="deployed_date=$(date)"
 
       # Apply terraform
@@ -158,5 +159,6 @@ jobs:
             -var="account_id=$ACCOUNT_ID" \
             -var="api_image_tag=${{needs.build_api.outputs.tag}}" \
             -var="ui_image_tag=${{needs.build_ui.outputs.tag}}" \
+            -var="ses_arn=$SES_ARN" \
             -var="deployed_date=$(date)"
         if: ${{ github.event_name != 'pull_request' }}
