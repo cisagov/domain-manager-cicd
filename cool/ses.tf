@@ -1,4 +1,15 @@
 # ===================================
+# Lambda Permission
+# ===================================
+resource "aws_lambda_permission" "ses_receive_emails" {
+  statement_id   = "GiveSESPermissiontoInvokeFunction"
+  principal      = "ses.amazonaws.com"
+  action         = "lambda:InvokeFunction"
+  source_account = var.account_id
+  function_name  = aws_lambda_function.receive_emails.function_name
+}
+
+# ===================================
 # SES Receipt Rule
 # ===================================
 resource "aws_ses_receipt_rule" "domains" {
