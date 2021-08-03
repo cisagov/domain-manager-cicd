@@ -115,6 +115,14 @@ data "aws_iam_policy_document" "ecs_task" {
     resources = ["*"]
   }
 
+  statement {
+    actions = [
+      "ses:*"
+    ]
+
+    resources = ["*"]
+  }
+
   # STS
   statement {
     actions = [
