@@ -32,8 +32,6 @@ locals {
     "WEBSITE_BUCKET" : aws_s3_bucket.websites.id
     "BROWSERLESS_ENDPOINT" : "${aws_lb.network.dns_name}:${local.browserless_port}"
     "WORKERS" : 6
-    "AWS_REGION" : var.region
-    "AWS_DEFAULT_REGION" : var.region
     "API_KEY" : aws_ssm_parameter.api_key.value
     "AWS_COGNITO_ENABLED" : 1
     "AWS_COGNITO_USER_POOL_ID" : aws_cognito_user_pool.pool.id

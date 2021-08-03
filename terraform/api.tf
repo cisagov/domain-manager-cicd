@@ -87,13 +87,23 @@ module "api_container" {
     }
   ]
 
-  environment = [
+  environment = concat([
     for key in keys(local.api_environment) :
     {
       name  = key
       value = local.api_environment[key]
     }
-  ]
+    ],
+    [
+      {
+        name  = "AWS_REGION"
+        value = var.region
+      },
+      {
+        name  = "AWS_DEFAULT_REGION"
+        value = var.region
+      }
+  ])
 }
 
 #=========================
