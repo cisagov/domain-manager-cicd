@@ -151,3 +151,14 @@ variable "browserless_count" {
 variable "deployed_date" {
   type = string
 }
+
+#=================================================
+#  LAMBDA
+#=================================================
+variable "lambda_memory" {
+  type = number
+}
+
+variable "lambda_timeout" {
+  type = number
+}

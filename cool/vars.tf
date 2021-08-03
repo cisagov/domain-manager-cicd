@@ -127,6 +127,17 @@ variable "ui_image_tag" {
 }
 
 #=================================================
+#  LAMBDA
+#=================================================
+variable "lambda_memory" {
+  type = number
+}
+
+variable "lambda_timeout" {
+  type = number
+}
+
+#=================================================
 #  ABOUT
 #=================================================
 variable "deployed_date" {

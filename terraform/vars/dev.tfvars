@@ -73,3 +73,9 @@ ui_desired_count = 1
 browserless_cpu = 512
 browserless_memory = 1024
 browserless_count = 1
+
+#=================================================
+#  LAMBDA
+#=================================================
+lambda_memory = 2048
+lambda_timeout = 870

@@ -155,7 +155,7 @@ jobs:
     # Run in the cool directory where terraform is defined
     defaults:
       run:
-        working-directory: cool
+        working-directory: domain-manager-cicd/cool
 
     # Set environment and environment variables
     env:
@@ -170,6 +170,15 @@ jobs:
     steps:
       # Checkout this repository
       - uses: actions/checkout@v2
+        with:
+          repository: cisagov/domain-manager-cicd
+          path: domain-manager-cicd
+
+      # Checkout domain-manager api repo
+      - uses: actions/checkout@v2
+        with:
+          repository: cisagov/domain-manager-api
+          path: domain-manager-api
 
       # Install and setup terraform
       - uses: hashicorp/setup-terraform@v1
@@ -187,6 +196,17 @@ jobs:
         run: |
           echo "ui_tag=$(cat artifacts/domain-manager-ui/tag.txt)" >> $GITHUB_ENV
           echo "api_tag=$(cat artifacts/domain-manager-api/tag.txt)" >> $GITHUB_ENV
+
+      # Install python 3.8 for installing lambda layer
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - name: Upgrade Pip
+        run: pip install --upgrade pip
+
+      # Install Lambda Layer
+      - name: Install Python Requirements
+        run: pip install -r ../../domain-manager-api/requirements.txt -t ./layer/python
 
       # Verifies terraform is installed properly
       - name: Verify Terraform version
