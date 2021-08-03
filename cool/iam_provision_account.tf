@@ -495,6 +495,15 @@ data "aws_iam_policy_document" "provision_s3_sqs_ssm_doc" {
     resources = ["*"]
   }
 
+  # SES
+  statement {
+    actions = [
+      "ses:*"
+    ]
+
+    resources = ["*"]
+  }
+
   # SQS
   statement {
     actions = [
