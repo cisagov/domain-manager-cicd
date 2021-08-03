@@ -206,7 +206,7 @@ jobs:
 
       # Install Lambda Layer
       - name: Install Python Requirements
-        run: pip install -r ./domain-manager-api/requirements.txt -t ./layer/python
+        run: pip install -r ../domain-manager-api/requirements.txt -t ./layer/python
 
       # Verifies terraform is installed properly
       - name: Verify Terraform version

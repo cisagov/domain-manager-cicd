@@ -112,7 +112,7 @@ jobs:
         run: |
           mkdir ./domain-manager-cicd/terraform/layer
           mkdir ./domain-manager-cicd/terraform/layer/python
-          pip install -r ../domain-manager-api/requirements.txt -t ./domain-manager-cicd/terraform/layer/python
+          pip install -r ./domain-manager-api/requirements.txt -t ./domain-manager-cicd/terraform/layer/python
 
       # Initialize Terraform
       - name: Terraform init
