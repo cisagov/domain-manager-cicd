@@ -31,7 +31,7 @@ data "archive_file" "code" {
 resource "aws_lambda_function" "receive_emails" {
   filename         = data.archive_file.code.output_path
   function_name    = "${var.app}-${var.env}-receive-emails"
-  handler          = "lambda_functions.tasks.receive_emails.lambda_handler"
+  handler          = "lambda_functions.receive_emails.lambda_handler"
   role             = aws_iam_role.lambda_exec_role.arn
   memory_size      = var.lambda_memory
   runtime          = "python3.8"
