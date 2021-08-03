@@ -63,12 +63,6 @@ data "aws_iam_policy_document" "lambda_policy_doc" {
   }
 
   statement {
-    actions = var.allowed_actions
-
-    resources = ["*"]
-  }
-
-  statement {
     effect = "Allow"
     actions = [
       "sts:AssumeRole"

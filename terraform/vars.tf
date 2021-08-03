@@ -52,14 +52,6 @@ variable "additional_redirect" {
 }
 
 #=================================================
-#  IAM
-#=================================================
-variable "allowed_actions" {
-  type    = list(string)
-  default = ["s3:*", "sqs:*", "cognito-idp:*"]
-}
-
-#=================================================
 #  LOGS
 #=================================================
 variable "log_retention_days" {
