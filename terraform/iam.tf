@@ -145,6 +145,16 @@ data "aws_iam_policy_document" "lambda_policy_doc" {
   }
 }
 
+resource "aws_iam_policy" "lambda_iam_policy" {
+  name   = "${var.app}-${var.env}-lambda"
+  policy = data.aws_iam_policy_document.lambda_policy_doc.json
+}
+
+resource "aws_iam_role_policy_attachment" "lambda_policy_attachment" {
+  role       = aws_iam_role.lambda_exec_role.name
+  policy_arn = aws_iam_policy.lambda_iam_policy.arn
+}
+
 resource "aws_iam_role_policy_attachment" "lambda" {
   role       = aws_iam_role.lambda_exec_role.name
   policy_arn = aws_iam_policy.ecs_task.arn
