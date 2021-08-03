@@ -148,7 +148,7 @@ variable "browserless_count" {
 #=================================================
 #  SES
 #=================================================
-variable "ses_assume_role_arn" {
+variable "ses_arn" {
   type = string
 }
 

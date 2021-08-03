@@ -140,7 +140,7 @@ data "aws_iam_policy_document" "lambda_policy_doc" {
     ]
 
     resources = [
-      var.ses_assume_role_arn
+      var.ses_arn
     ]
   }
 }
