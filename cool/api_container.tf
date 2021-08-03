@@ -21,8 +21,6 @@ locals {
     "WEBSITE_BUCKET" : aws_s3_bucket.websites.id
     "BROWSERLESS_ENDPOINT" : "${aws_lb.network.dns_name}:${local.browserless_port}"
     "WORKERS" : 6
-    "AWS_REGION" : var.region
-    "AWS_DEFAULT_REGION" : var.region
     "API_KEY" : aws_ssm_parameter.api_key.value
     "AWS_COGNITO_ENABLED" : 1
     "AWS_COGNITO_USER_POOL_ID" : aws_cognito_user_pool.pool.id
@@ -31,10 +29,10 @@ locals {
     "TWO_CAPTCHA" : aws_ssm_parameter.two_captcha.value
     "SES_ASSUME_ROLE_ARN" : var.ses_arn
     "SMTP_FROM" : var.ses_from
-    "NEW_USER_NOTIFICATION_EMAIL_ADDRESS": var.new_user_notification_email_address
-    "DEPLOYED_DATE": var.deployed_date
-    "API_COMMIT_ID": var.api_image_tag
-    "UI_COMMIT_ID": var.ui_image_tag
+    "NEW_USER_NOTIFICATION_EMAIL_ADDRESS" : var.new_user_notification_email_address
+    "DEPLOYED_DATE" : var.deployed_date
+    "API_COMMIT_ID" : var.api_image_tag
+    "UI_COMMIT_ID" : var.ui_image_tag
   }
 }
 
@@ -90,11 +88,21 @@ module "api_container" {
     }
   ]
 
-  environment = [
+  environment = concat([
     for key in keys(local.api_environment) :
     {
       name  = key
       value = local.api_environment[key]
     }
-  ]
+    ],
+    [
+      {
+        name  = "AWS_REGION"
+        value = var.region
+      },
+      {
+        name  = "AWS_DEFAULT_REGION"
+        value = var.region
+      }
+  ])
 }
