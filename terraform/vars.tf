@@ -52,6 +52,14 @@ variable "additional_redirect" {
 }
 
 #=================================================
+#  IAM
+#=================================================
+variable "allowed_actions" {
+  type    = list(string)
+  default = ["s3:*", "sqs:*", "cognito-idp:*"]
+}
+
+#=================================================
 #  LOGS
 #=================================================
 variable "log_retention_days" {
@@ -143,6 +151,13 @@ variable "browserless_memory" {
 
 variable "browserless_count" {
   type = number
+}
+
+#=================================================
+#  SES
+#=================================================
+variable "ses_assume_role_arn" {
+  type = string
 }
 
 #=================================================
