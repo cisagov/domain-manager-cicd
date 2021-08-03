@@ -75,7 +75,7 @@ browserless_memory = 1024
 browserless_count = 1
 
 #=================================================
-#  TASKS
+#  LAMBDA
 #=================================================
 lambda_memory = 2048
 lambda_timeout = 870

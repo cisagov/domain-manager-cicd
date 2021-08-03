@@ -153,7 +153,7 @@ variable "deployed_date" {
 }
 
 #=================================================
-#  TASKS
+#  LAMBDA
 #=================================================
 variable "lambda_memory" {
   type = number

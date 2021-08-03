@@ -53,3 +53,9 @@ api_image_repo = "domain-manager-api"
 #  UI
 #=================================================
 ui_image_repo = "domain-manager-ui"
+
+#=================================================
+#  LAMBDA
+#=================================================
+lambda_memory = 2048
+lambda_timeout = 870
