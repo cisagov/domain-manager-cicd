@@ -3,11 +3,11 @@ resource "aws_sns_topic" "emails" {
 }
 
 resource "aws_lambda_permission" "sns_lambda_emails" {
-  statement_id   = "GiveSNSPermissiontoInvokeFunction"
-  principal      = "sns.amazonaws.com"
-  action         = "lambda:InvokeFunction"
-  source_account = var.account_id
-  function_name  = aws_lambda_function.receive_emails.function_name
+  statement_id  = "AllowExecutionFromSNS"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.receive_emails.function_name
+  principal     = "sns.amazonaws.com"
+  source_arn    = aws_sns_topic.emails.arn
 }
 
 resource "aws_sns_topic_subscription" "lambda_emails" {
