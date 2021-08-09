@@ -189,7 +189,7 @@ jobs:
       - name: Download API Tag Files
         uses: actions/download-artifact@v2
         with:
-          path: cool/artifacts
+          path: domain-manager-cicd/cool/artifacts
 
       # Gets tags for images and stores in environment variables
       - name: Store tags in environment variables
