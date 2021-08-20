@@ -15,7 +15,6 @@ resource "aws_ecs_task_definition" "task" {
   container_definitions = jsonencode([
     module.ui_container.json_map_object,
     module.api_container.json_map_object,
-    module.browserless_container.json_map_object,
   ])
 
   cpu                      = var.cpu
@@ -53,15 +52,6 @@ resource "aws_security_group" "service" {
     self            = true
   }
 
-  ingress {
-    description = "Allow traffic to containers"
-    from_port   = local.browserless_port
-    to_port     = local.browserless_port
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-    self        = true
-  }
-
   egress {
     description = "Allow outbound traffic"
     from_port   = 0
@@ -97,12 +87,6 @@ resource "aws_ecs_service" "service" {
     target_group_arn = aws_lb_target_group.ui.arn
     container_name   = local.ui_container_name
     container_port   = local.ui_container_port
-  }
-
-  load_balancer {
-    target_group_arn = aws_lb_target_group.browserless.arn
-    container_name   = local.browserless_container_name
-    container_port   = local.browserless_port
   }
 
   network_configuration {

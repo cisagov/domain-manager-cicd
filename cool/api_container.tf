@@ -19,7 +19,6 @@ locals {
     "STATIC_GEN_URL" : "http://localhost:8000"
     "TEMPLATE_BUCKET" : aws_s3_bucket.templates.id
     "WEBSITE_BUCKET" : aws_s3_bucket.websites.id
-    "BROWSERLESS_ENDPOINT" : "${aws_lb.network.dns_name}:${local.browserless_port}"
     "WORKERS" : 6
     "API_KEY" : aws_ssm_parameter.api_key.value
     "AWS_COGNITO_ENABLED" : 1
