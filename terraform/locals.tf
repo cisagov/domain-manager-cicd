@@ -30,7 +30,6 @@ locals {
     "STATIC_GEN_URL" : "http://localhost:8000"
     "TEMPLATE_BUCKET" : aws_s3_bucket.templates.id
     "WEBSITE_BUCKET" : aws_s3_bucket.websites.id
-    "BROWSERLESS_ENDPOINT" : "${aws_lb.network.dns_name}:${local.browserless_port}"
     "WORKERS" : 6
     "API_KEY" : aws_ssm_parameter.api_key.value
     "AWS_COGNITO_ENABLED" : 1
@@ -45,11 +44,6 @@ locals {
     "API_COMMIT_ID" : var.api_image_tag
     "UI_COMMIT_ID" : var.ui_image_tag
   }
-
-  # BROWSERLESS LOCALS
-  browserless_port           = 3000
-  browserless_name           = "${var.app}-${var.env}-browserless"
-  browserless_container_name = "browserless"
 
   # UI LOCALS
   ui_container_port     = 80

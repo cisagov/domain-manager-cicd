@@ -131,21 +131,6 @@ variable "ui_desired_count" {
 }
 
 #=================================================
-#  BROWSERLESS
-#=================================================
-variable "browserless_cpu" {
-  type = number
-}
-
-variable "browserless_memory" {
-  type = number
-}
-
-variable "browserless_count" {
-  type = number
-}
-
-#=================================================
 #  SES
 #=================================================
 variable "ses_arn" {
