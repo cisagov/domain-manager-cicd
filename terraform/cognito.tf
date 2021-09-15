@@ -3,6 +3,10 @@
 #=================================================
 resource "aws_cognito_user_pool" "pool" {
   name = "${var.app}-${var.env}-users"
+
+  auto_verified_attributes = ["email"]
+  email_verification_subject = "[Domain Manager] Verify your Email"
+  email_verification_message = "Thank you for signing up on Domain Manager. Please verify your email address within 24 hours. Your verification code is: {####}"
 }
 
 resource "aws_cognito_user_pool_client" "client" {
