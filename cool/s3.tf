@@ -3,7 +3,7 @@
 # ===========================
 resource "aws_s3_bucket" "templates" {
   bucket = "${var.app}-${var.env}-templates"
-  acl    = "public-read"
+  acl    = "private"
   tags   = local.tags
   policy = <<POLICY
 {
@@ -27,7 +27,7 @@ POLICY
 
 resource "aws_s3_bucket" "websites" {
   bucket = "${var.app}-${var.env}-websites"
-  acl    = "public-read"
+  acl    = "private"
   tags   = local.tags
   policy = <<POLICY
 {

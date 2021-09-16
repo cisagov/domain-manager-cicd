@@ -26,7 +26,7 @@ POLICY
 
 resource "aws_s3_bucket" "websites" {
   bucket = "${var.app}-${var.env}-websites"
-  acl    = "public-read"
+  acl    = "private"
   policy = <<POLICY
 {
   "Version": "2012-10-17",
