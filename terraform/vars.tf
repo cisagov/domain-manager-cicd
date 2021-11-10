@@ -24,7 +24,7 @@ variable "region" {
 #  EMAILS NOTIFICATIONS
 #=================================================
 variable "new_user_notification_email_address" {
-  type = string
+  type        = string
   description = "An admin email group for notifiying when a new user is registered"
 }
 

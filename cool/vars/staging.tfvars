@@ -6,14 +6,14 @@ workspace_type = "staging"
 #=================================================
 #  CORE
 #=================================================
-env = "staging"
-app = "domain-manager"
+env    = "staging"
+app    = "domain-manager"
 region = "us-east-1"
 
 #=================================================
 #  EMAILS NOTIFICATIONS
 #=================================================
-ses_from = "domainmanager-staging@cyber.dhs.gov"
+ses_from                            = "domainmanager-staging@cyber.dhs.gov"
 new_user_notification_email_address = "domainmanager-aaaacmecaofdaenpbzd4gkrxoq@cset-group.slack.com"
 
 #=================================================
@@ -34,14 +34,14 @@ idle_timeout = 600
 #=================================================
 #  DOCUMENTDB
 #=================================================
-documentdb_cluster_size = 1
+documentdb_cluster_size   = 1
 documentdb_instance_class = "db.t3.medium"
 
 #=================================================
 #  Resources
 #=================================================
-cpu = 2048
-memory = 4096
+cpu           = 2048
+memory        = 4096
 desired_count = 1
 
 #=================================================
@@ -57,5 +57,5 @@ ui_image_repo = "domain-manager-ui"
 #=================================================
 #  LAMBDA
 #=================================================
-lambda_memory = 2048
+lambda_memory  = 2048
 lambda_timeout = 870

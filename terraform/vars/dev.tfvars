@@ -1,8 +1,8 @@
 #=================================================
 #  CORE
 #=================================================
-env = "dev"
-app = "dm"
+env    = "dev"
+app    = "dm"
 region = "us-east-1"
 
 #=================================================
@@ -14,13 +14,13 @@ new_user_notification_email_address = "domainmanager-aaaacmecaofdaenpbzd4gkrxoq@
 #  NETWORK
 #=================================================
 private_subnet_ids = [
-    "subnet-0153f175feb0dfce5",
-    "subnet-02f0f6199dd75238b"
+  "subnet-0153f175feb0dfce5",
+  "subnet-02f0f6199dd75238b"
 ]
 
 public_subnet_ids = [
-    "subnet-0a365c16b67a2b6b0",
-    "subnet-0ea8f699bed93417c"
+  "subnet-0a365c16b67a2b6b0",
+  "subnet-0ea8f699bed93417c"
 ]
 
 vpc_id = "vpc-074f7db64238a2d16"
@@ -48,27 +48,27 @@ route53_zone_name = "inltesting.xyz"
 #=================================================
 #  DOCUMENTDB
 #=================================================
-documentdb_cluster_size = 1
+documentdb_cluster_size   = 1
 documentdb_instance_class = "db.t3.medium"
 
 #=================================================
 #  API
 #=================================================
-api_image_repo = "domain-manager-api"
-api_cpu = 2048
-api_memory = 4096
+api_image_repo    = "domain-manager-api"
+api_cpu           = 2048
+api_memory        = 4096
 api_desired_count = 1
 
 #=================================================
 #  UI
 #=================================================
-ui_image_repo = "domain-manager-ui"
-ui_cpu = 2048
-ui_memory = 4096
+ui_image_repo    = "domain-manager-ui"
+ui_cpu           = 2048
+ui_memory        = 4096
 ui_desired_count = 1
 
 #=================================================
 #  LAMBDA
 #=================================================
-lambda_memory = 2048
+lambda_memory  = 2048
 lambda_timeout = 870

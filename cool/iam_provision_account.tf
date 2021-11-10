@@ -595,5 +595,3 @@ resource "aws_iam_role_policy_attachment" "provision_ecs_task" {
   policy_arn = aws_iam_policy.ecs_task.arn
   role       = var.provision_account_role_name
 }
-
-
