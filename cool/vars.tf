@@ -2,7 +2,7 @@
 #  PROVIDER
 #=================================================
 variable "shared_services_account_id" {
-  type = string
+  type        = string
   description = "Account ID for DNS shared services role."
 }
 
@@ -101,7 +101,7 @@ variable "memory" {
 }
 
 variable "desired_count" {
-  type= number
+  type = number
 }
 
 #=================================================

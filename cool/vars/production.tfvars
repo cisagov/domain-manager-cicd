@@ -6,14 +6,14 @@ workspace_type = "production"
 #=================================================
 #  CORE
 #=================================================
-env = "prod"
-app = "domain-manager"
+env    = "prod"
+app    = "domain-manager"
 region = "us-east-1"
 
 #=================================================
 #  EMAILS NOTIFICATIONS
 #=================================================
-ses_from = "domainmanager@cyber.dhs.gov"
+ses_from                            = "domainmanager@cyber.dhs.gov"
 new_user_notification_email_address = "CISA.CSD.VM_Assessments_DomainManagement@cisa.dhs.gov"
 
 #=================================================
@@ -34,14 +34,14 @@ idle_timeout = 600
 #=================================================
 #  DOCUMENTDB
 #=================================================
-documentdb_cluster_size = 1
+documentdb_cluster_size   = 1
 documentdb_instance_class = "db.r5.large"
 
 #=================================================
 #  Resources
 #=================================================
-cpu = 2048
-memory = 4096
+cpu           = 2048
+memory        = 4096
 desired_count = 1
 
 #=================================================
@@ -57,5 +57,5 @@ ui_image_repo = "domain-manager-ui"
 #=================================================
 #  LAMBDA
 #=================================================
-lambda_memory = 2048
+lambda_memory  = 2048
 lambda_timeout = 870

@@ -11,7 +11,7 @@ resource "aws_ecs_cluster" "cluster" {
 #=========================
 resource "aws_ecs_task_definition" "task" {
   family = "${var.app}-${var.env}"
-  
+
   container_definitions = jsonencode([
     module.ui_container.json_map_object,
     module.api_container.json_map_object,
@@ -69,13 +69,13 @@ resource "aws_security_group" "service" {
 # SERVICE
 #=========================
 resource "aws_ecs_service" "service" {
-  name                  = "${var.app}-${var.env}"
-  cluster               = aws_ecs_cluster.cluster.id
-  task_definition       = aws_ecs_task_definition.task.arn
-  desired_count         = var.desired_count
-  force_new_deployment  = true
-  launch_type           = "FARGATE"
-  tags                  = local.tags
+  name                 = "${var.app}-${var.env}"
+  cluster              = aws_ecs_cluster.cluster.id
+  task_definition      = aws_ecs_task_definition.task.arn
+  desired_count        = var.desired_count
+  force_new_deployment = true
+  launch_type          = "FARGATE"
+  tags                 = local.tags
 
   load_balancer {
     target_group_arn = aws_lb_target_group.api.arn
