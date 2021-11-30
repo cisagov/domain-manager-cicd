@@ -10,6 +10,7 @@ locals {
     "cognito-identity:*",
     "cognito-idp:*",
     "sts:AssumeRole",
+    "ses:*",
   ]
   # API LOCALS
   api_name               = "${var.app}-${var.env}-api"
