@@ -21,6 +21,7 @@ def main():
 
 @click.command()
 @click.option(
+    "-e",
     "--environment",
     required=True,
     prompt=True,
@@ -30,9 +31,8 @@ def deploy(environment):
     """Deploy to defined environment."""
     token = get_token()
     if not token:
-        click.echo("no token found - running configure")
-        configure()
-        token = get_token()
+        click.echo("no token found - please configure")
+        return
 
     click.confirm(f"Are you sure you want to deploy {environment}?", abort=True)
 
@@ -50,7 +50,7 @@ def deploy(environment):
 
 
 @click.command("configure")
-@click.option("--token", required=True, prompt=True)
+@click.option("-t", "--token", required=True, prompt=True)
 def configure(token):
     """Configure access point in config.ini file."""
     config = configparser.ConfigParser()

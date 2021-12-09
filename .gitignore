@@ -8,3 +8,4 @@ debug.log
 .DS_Store
 .python-version
 config.ini
+.venv/
