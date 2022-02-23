@@ -7,8 +7,8 @@ resource "aws_s3_bucket_acl" "websites" {
   acl    = "private"
 }
 
-resource "aws_s3_bucket_policy" "templates" {
-  bucket = aws_s3_bucket.templates.id
+resource "aws_s3_bucket_policy" "websites" {
+  bucket = aws_s3_bucket.websites.id
   policy = <<POLICY
 {
   "Version": "2012-10-17",
@@ -25,8 +25,8 @@ resource "aws_s3_bucket_policy" "templates" {
 POLICY
 }
 
-resource "aws_s3_bucket_policy" "templates" {
-  bucket = aws_s3_bucket.templates.id
+resource "aws_s3_bucket_policy" "websites" {
+  bucket = aws_s3_bucket.websites.id
 
   index_document {
     suffix = "home.html"
