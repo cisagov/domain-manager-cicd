@@ -28,7 +28,7 @@ resource "aws_s3_bucket_policy" "templates" {
 POLICY
 }
 
-resource "aws_s3_bucket_policy" "templates" {
+resource "aws_s3_bucket_website_configuration" "templates" {
   bucket = aws_s3_bucket.templates.id
 
   index_document {

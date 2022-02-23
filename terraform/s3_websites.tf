@@ -25,7 +25,7 @@ resource "aws_s3_bucket_policy" "websites" {
 POLICY
 }
 
-resource "aws_s3_bucket_policy" "websites" {
+resource "aws_s3_bucket_website_configuration" "websites" {
   bucket = aws_s3_bucket.websites.id
 
   index_document {
