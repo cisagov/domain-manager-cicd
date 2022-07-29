@@ -69,7 +69,7 @@ def get_token():
 
 
 def deploy_develop(token):
-    """Deploy to development environment."""
+    """Deploy to sandbox environment."""
     return requests.post(
         url="https://api.github.com/repos/cisagov/domain-manager-cicd/dispatches",
         json={"event_type": "deploy", "client_payload": {}},
