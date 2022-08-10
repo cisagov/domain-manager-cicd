@@ -7,10 +7,9 @@ locals {
 
   api_environment = {
     "FLASK_APP" : "main"
-    "FLASK_ENV" : "production"
+    "FLASK_DEBUG" : 0
     "APP_NAME" : var.app
     "APP_ENV" : var.env
-    "DEBUG" : 0
     "DB_PW" : aws_ssm_parameter.docdb_password.value
     "DB_USER" : aws_ssm_parameter.docdb_username.value
     "DB_HOST" : module.documentdb.endpoint
