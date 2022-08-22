@@ -48,7 +48,7 @@ module "documentdb" {
   skip_final_snapshot     = true
 }
 
-module "documentdb" {
+module "documentdb4.0" {
   source                  = "git::https://github.com/cloudposse/terraform-aws-documentdb-cluster.git?ref=tags/0.15.0"
   stage                   = var.env
   namespace               = var.app
