@@ -48,11 +48,14 @@ module "documentdb" {
   skip_final_snapshot     = true
 }
 
-module "documentdb_4-0" {
-  source                  = "git::https://github.com/cloudposse/terraform-aws-documentdb-cluster.git?ref=tags/0.15.0"
-  stage                   = var.env
-  namespace               = var.app
-  name                    = "docdb4.0"
+module "documentdb_cluster" {
+  source  = "cloudposse/documentdb-cluster/aws"
+  version = "0.15.0"
+
+  stage     = var.env
+  namespace = var.app
+  name      = "db"
+
   cluster_family          = "docdb4.0"
   cluster_size            = var.documentdb_cluster_size
   master_username         = random_string.docdb_username.result
