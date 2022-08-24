@@ -50,7 +50,7 @@ module "documentdb" {
 
 module "documentdb_cluster" {
   source  = "cloudposse/documentdb-cluster/aws"
-  version = "0.15.0"
+  version = "0.13.0"
 
   stage     = var.env
   namespace = var.app
