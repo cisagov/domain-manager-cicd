@@ -67,3 +67,15 @@ module "documentdb" {
 #   allowed_security_groups = [aws_security_group.api.id]
 #   skip_final_snapshot     = true
 # }
+
+resource "aws_docdb_cluster" "docdb" {
+  backup_retention_period = 5
+  cluster_identifier      = "db-cluster"
+  engine                  = "docdb"
+  engine_version          = 4.0
+  master_username         = random_string.docdb_username.result
+  master_password         = random_password.docdb_password.result
+  preferred_backup_window = "21:00-23:00"
+  skip_final_snapshot     = true
+  vpc_security_group_ids  = [var.vpc.id]
+}
