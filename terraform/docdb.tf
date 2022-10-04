@@ -48,22 +48,34 @@ module "documentdb" {
   skip_final_snapshot     = true
 }
 
-# module "documentdb_cluster" {
-#   source  = "cloudposse/documentdb-cluster/aws"
-#   version = "0.13.0"
+module "documentdb_cluster" {
+  source  = "cloudposse/documentdb-cluster/aws"
+  version = "0.13.0"
 
-#   stage     = var.env
-#   namespace = var.app
-#   name      = "db"
+  stage     = var.env
+  namespace = var.app
+  name      = "db"
 
-#   cluster_family          = "docdb4.0"
-#   cluster_size            = var.documentdb_cluster_size
+  cluster_family          = "docdb4.0"
+  cluster_size            = var.documentdb_cluster_size
+  master_username         = random_string.docdb_username.result
+  master_password         = random_password.docdb_password.result
+  instance_class          = var.documentdb_instance_class
+  vpc_id                  = var.vpc_id
+  subnet_ids              = var.private_subnet_ids
+  allowed_cidr_blocks     = ["10.0.0.0/8"]
+  allowed_security_groups = [aws_security_group.api.id]
+  skip_final_snapshot     = true
+}
+
+# resource "aws_docdb_cluster" "docdb" {
+#   backup_retention_period = 5
+#   cluster_identifier      = "db-cluster"
+#   engine                  = "docdb"
+#   engine_version          = 4.0
 #   master_username         = random_string.docdb_username.result
 #   master_password         = random_password.docdb_password.result
-#   instance_class          = var.documentdb_instance_class
-#   vpc_id                  = var.vpc_id
-#   subnet_ids              = var.private_subnet_ids
-#   allowed_cidr_blocks     = ["10.0.0.0/8"]
-#   allowed_security_groups = [aws_security_group.api.id]
+#   preferred_backup_window = "21:00-23:00"
 #   skip_final_snapshot     = true
+#   vpc_security_group_ids  = [var.vpc.id]
 # }
