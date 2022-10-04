@@ -1,4 +1,4 @@
-# CON-PCA Data Dictionary #
+# Domain Manager Data Dictionary #
 
 This document is the data dictionary for Domain Manager stored in a MongoDB
 database. This information is organized by collection (table).
@@ -11,7 +11,7 @@ database. This information is organized by collection (table).
 - [Template](#templates)
 - [User](#users)
 
-### applications ###
+### Applications ###
 
 This collection contains applications that can use the domain manager.
 Each application is treated as a group. Individuals can be assigned to
@@ -36,7 +36,7 @@ groups assigned.
 - contact_phone: string =The phone number of the user to contact for
   information or permissions for a given application.
 
-### domains ###
+### Domains ###
 
 This is the information for standing up and securing a domain. Its current
 status, related records, and history are stored here as well.
@@ -94,7 +94,7 @@ status, related records, and history are stored here as well.
     history objects start_date value.
 - cloudfront: list of dictionaries = The deployed domains AWS cloudfront distribution
   information.
-  - distibution_endpoint: string = The AWS clodfront distribution endpoint name.
+  - distribution_endpoint: string = The AWS cloudfront distribution endpoint name.
   - id: string = The ID for the cloudfront distribution endpoint as for reference
     to the AWS API.
 - route53: list of dictionaries = The domains collection of AWS route 53 ID's.
@@ -131,7 +131,7 @@ status, related records, and history are stored here as well.
 - submitted_category: string = The category that the domain has been or will be
   used to categorize with the proxy categorization services.
 
-### logs ###
+### Logs ###
 
 This is a record of actions taken by users to allow for accurate histories to be
 made for the system.
@@ -147,7 +147,7 @@ made for the system.
 - status_code: integer = The status code result of the action (ex. 200 for OK,
   400 for denied)
 - path: string = The url associated with the action. Corresponds with the API call
-  made by the uesr.
+  made by the user.
 - method: string = The method the API call was using (ex. get, put, post, etc)
 - args: list of dictionaries = The arguments associated with the API call. typically
   an ID associated with an object in the database.
@@ -155,9 +155,9 @@ made for the system.
   call. Contains the data of whatever the user was trying to send for that API call.
 - error: string = If an error occurs during the action, it will be logged here.
 
-### templates ###
+### Templates ###
 
-This is the set of templates available within the system. Tempaltes will be html
+This is the set of templates available within the system. Templates will be html
 pages or sites that have tags imbedded to allow for template customization when
 a templates is assigned to a domain.
 
@@ -174,7 +174,7 @@ a templates is assigned to a domain.
 - is_approved: boolean = If this template has been approved by an admin for
   use by all users within a domain.
 
-### users ###
+### Users ###
 
 This is a collection of the systems users. It allows for tracking of user permissions,
 history, and current status within the system.
