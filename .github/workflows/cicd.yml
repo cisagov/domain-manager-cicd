@@ -112,35 +112,35 @@ jobs:
       # Install Lambda Layer
       - name: Install Python Requirements
         run: |
-          mkdir ./domain-manager-cicd/terraform/layer
-          mkdir ./domain-manager-cicd/terraform/layer/python
-          pip install -r ./domain-manager-api/requirements.txt -t ./domain-manager-cicd/terraform/layer/python
+          mkdir ./domain-manager-cicd/sandbox/layer
+          mkdir ./domain-manager-cicd/sandbox/layer/python
+          pip install -r ./domain-manager-api/requirements.txt -t ./domain-manager-cicd/sandbox/layer/python
 
       # Initialize Terraform
       - name: Terraform init
-        working-directory: ./domain-manager-cicd/terraform
+        working-directory: ./domain-manager-cicd/sandbox
         run: terraform init -input=false
 
       # Select terraform workspace
       - name: Terraform Workspace
-        working-directory: ./domain-manager-cicd/terraform
+        working-directory: ./domain-manager-cicd/sandbox
         run: |
           terraform workspace select $ENVIRONMENT
           terraform workspace show
 
       # Validate Terraform
       - name: Terraform validation
-        working-directory: ./domain-manager-cicd/terraform
+        working-directory: ./domain-manager-cicd/sandbox
         run: terraform validate
 
       # Sometimes this just needs run again...
       - name: Terraform init 2
-        working-directory: ./domain-manager-cicd/terraform
+        working-directory: ./domain-manager-cicd/sandbox
         run: terraform init -input=false
 
       # Plan terraform
       - name: Terraform Plan
-        working-directory: ./domain-manager-cicd/terraform
+        working-directory: ./domain-manager-cicd/sandbox
         run: |
           terraform plan \
             -input=false \
@@ -153,7 +153,7 @@ jobs:
 
       # Apply terraform
       - name: Terraform Apply
-        working-directory: ./domain-manager-cicd/terraform
+        working-directory: ./domain-manager-cicd/sandbox
         run: |
           terraform apply \
             -input=false -auto-approve \
