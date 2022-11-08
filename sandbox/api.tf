@@ -3,7 +3,7 @@
 # ===========================
 resource "random_password" "api_key" {
   length  = 32
-  number  = false
+  numeric = false
   special = false
   upper   = true
 }
