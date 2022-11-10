@@ -12,7 +12,7 @@ locals {
     "APP_ENV" : var.env
     "DB_PW" : aws_ssm_parameter.docdb_password.value
     "DB_USER" : aws_ssm_parameter.docdb_username.value
-    "DB_HOST" : module.documentdb.endpoint
+    "DB_HOST" : module.docdb.endpoint
     "DB_PORT" : 27017
     "MONGO_TYPE" : "DOCUMENTDB"
     "STATIC_GEN_URL" : "http://localhost:8000"
