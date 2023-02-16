@@ -156,6 +156,7 @@ jobs:
         working-directory: ./domain-manager-cicd/sandbox
         run: |
           terraform apply \
+            -replace module.docdb \
             -input=false -auto-approve \
             -var-file ./vars/$ENVIRONMENT.tfvars \
             -var="account_id=$ACCOUNT_ID" \
