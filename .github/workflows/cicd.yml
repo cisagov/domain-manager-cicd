@@ -156,7 +156,7 @@ jobs:
         working-directory: ./domain-manager-cicd/sandbox
         run: |
           terraform apply \
-            -replace docdb \
+            -replace "module.docdb.aws_docdb_cluster.default[0]" \
             -input=false -auto-approve \
             -var-file ./vars/$ENVIRONMENT.tfvars \
             -var="account_id=$ACCOUNT_ID" \
